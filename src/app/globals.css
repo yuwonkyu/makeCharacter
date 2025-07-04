@@ -38,17 +38,17 @@
   --accent-6: #acccec;
 
   /* 그라데이션 블루(1,2 통합) */
-  --gradient-blue: linear-gradient(90deg, #dce5ee 0%, #acccec 100%);
+  --gradient-blue: linear-gradient(180deg, #dce5ee 0%, #acccec 100%);
   /* 그라데이션 퍼플 */
   --gradient-purple: linear-gradient(
-    90deg,
+    180deg,
     #676195 7%,
     #b9afff 17%,
     #8c81d8 29%
   );
   /* 그라데이션 오렌지 */
   --gradient-orange: linear-gradient(
-    90deg,
+    180deg,
     #a15a40 7%,
     #ffaf7c 17%,
     #cb7348 29%
