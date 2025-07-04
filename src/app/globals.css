@@ -93,8 +93,7 @@ button {
   font-family: var(--font-main);
   background: var(--primary);
   color: var(--gray-1);
-  padding: 0.5em 1.2em;
-  border: 1px solid var(--blue-1);
+  border: 1.5px solid var(--gray-1);
   cursor: pointer;
   transition: background 0.2s;
 }

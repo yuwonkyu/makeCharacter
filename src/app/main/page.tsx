@@ -24,20 +24,19 @@ export default function MainPage() {
       <div className="relative z-20 flex flex-1 items-center justify-center w-full">
         <div
           className="
-            bg-gradient-to-b
-            from-[var(--blue-2)]
-            to-[var(--blue-5)]
-            rounded-2xl shadow-2xl border-2 border-[var(--blue-1)]
-            p-6 min-w-[340px] max-w-[400px] mt-auto mb-[10vh]            
+            rounded-2xl shadow-2xl border-2 border-[var(--accent-1)]
+            p-6 mt-auto mb-[10vh]            
             flex flex-col items-center
           "
+          style={{ background: "var(--gradient-blue)" }}
         >
-          <div className="w-full flex flex-col gap-0.5 items-center border-2 border-[var(--gray-1)] rounded-[6px] bg-[var(--gray-1)]">
+          <div className="p-0.1 flex flex-col gap-0.5 items-center border-2 border-[var(--blue-1)] rounded-[6px] bg-[var(--blue-1)] ">
             <button
               className="
                 w-full
+                px-9 py-1 md:px-10 md:py-2
                 shadow-[2px_4px_8px_0_rgba(64,100,133,0.15)]
-                text-2xl font-bold
+                text-xl font-bold md:text-2xl
                 rounded-[6px] transition-all
                 hover:scale-[1.03] hover:shadow-lg focus:outline-none
               "
@@ -49,8 +48,9 @@ export default function MainPage() {
             <button
               className="
                 w-full
+                px-9 py-1 md:px-10 md:py-2
                 shadow-[2px_4px_8px_0_rgba(64,100,133,0.15)]
-                text-2xl font-bold
+                text-xl font-bold md:text-2xl
                 rounded-[6px] transition-all
                 hover:scale-[1.03] hover:shadow-lg focus:outline-none
               "
@@ -62,8 +62,9 @@ export default function MainPage() {
             <button
               className="
                 w-full
+                px-9 py-1 md:px-10 md:py-2
                 shadow-[2px_4px_8px_0_rgba(64,100,133,0.15)]
-                text-2xl font-bold
+                text-xl font-bold md:text-2xl
                 rounded-[6px] transition-all
                 hover:scale-[1.03] hover:shadow-lg focus:outline-none
               "
