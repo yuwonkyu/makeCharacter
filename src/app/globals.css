@@ -13,7 +13,6 @@
   --foreground: #171717;
   --primary: #3b82f6;
   --accent: #f87171;
-  --border-radius: 12px;
   --font-main: "NEXON Lv2 Gothic", Arial, Helvetica, sans-serif;
 
   /* 단일 컬러 변수 */
@@ -92,11 +91,10 @@ h6 {
 
 button {
   font-family: var(--font-main);
-  border-radius: var(--border-radius);
   background: var(--primary);
-  /* color: #fff; */
+  color: var(--gray-1);
   padding: 0.5em 1.2em;
-  border: none;
+  border: 1px solid var(--blue-1);
   cursor: pointer;
   transition: background 0.2s;
 }
