@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+import BgImage from "@/components/common/BgImage";
 import { useRouter } from "next/navigation";
 
 export default function Landing() {
@@ -7,19 +7,7 @@ export default function Landing() {
   return (
     <div className="relative min-h-screen w-full">
       {/* 배경 이미지 */}
-      <Image
-        src="/img/bg-summer.png"
-        alt="배경"
-        fill
-        className="z-0 object-cover"
-        priority
-        draggable={false}
-      />
-      {/* 상단 오버레이: 위에서 아래로 투명해짐 */}
-      <div className="absolute top-0 left-0 w-full h-[20%] z-10 bg-gradient-to-b from-black/50 to-transparent"></div>
-
-      {/* 하단 오버레이: 아래에서 위로 투명해짐 */}
-      <div className="absolute bottom-0 left-0 w-full h-[20%] z-10 bg-gradient-to-t from-black/50 to-transparent"></div>
+      <BgImage src="/img/bg-summer.png" overlay="top-bottom" />
 
       {/* 반응형 Home 버튼 */}
       <button

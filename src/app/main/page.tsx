@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+import BgImage from "@/components/common/BgImage";
 import { useRouter } from "next/navigation";
 
 export default function MainPage() {
@@ -8,18 +8,7 @@ export default function MainPage() {
   return (
     <div className="relative min-h-screen flex flex-col items-center">
       {/* 배경 이미지 */}
-      <div className="absolute inset-0 w-full h-full z-0">
-        <Image
-          src="/img/bg-summer.png"
-          alt="메인 배경"
-          fill
-          className="object-cover"
-          priority
-          draggable={false}
-        />
-        {/* 검은색 반투명 오버레이 */}
-        <div className="absolute inset-0 bg-black/50 z-10" />
-      </div>
+      <BgImage src="/img/bg-summer.png" overlay="full" />
       {/* 메뉴 박스 */}
       <div className="relative z-20 flex flex-1 items-center justify-center w-full">
         <div
