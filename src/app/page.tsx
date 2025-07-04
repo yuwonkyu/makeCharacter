@@ -15,6 +15,12 @@ export default function Landing() {
         priority
         draggable={false}
       />
+      {/* 상단 오버레이: 위에서 아래로 투명해짐 */}
+      <div className="absolute top-0 left-0 w-full h-[20%] z-10 bg-gradient-to-b from-black/50 to-transparent"></div>
+
+      {/* 하단 오버레이: 아래에서 위로 투명해짐 */}
+      <div className="absolute bottom-0 left-0 w-full h-[20%] z-10 bg-gradient-to-t from-black/50 to-transparent"></div>
+
       {/* 반응형 Home 버튼 */}
       <button
         className="z-10 absolute left-1/2 bottom-8 -translate-x-1/2 px-8 py-4 rounded-[16px] text-2xl font-bold shadow-lg border-none
