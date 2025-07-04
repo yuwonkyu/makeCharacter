@@ -1,13 +1,40 @@
+"use client";
+
 import Image from "next/image";
+import { useAvatarMove } from "@/hooks/useAvatarMove";
 
 const CharacterPage = () => {
+  const { pos, GRID_WIDTH, GRID_HEIGHT } = useAvatarMove();
+
+  // 아바타 크기: 모바일/태블릿/PC별로 다르게
+  const AVATAR_SIZE_MOBILE = 64;
+  const AVATAR_SIZE_PC = 112;
+
+  // 반응형 아바타 크기 계산 (Tailwind로도 처리, style로도 보정)
+  const getAvatarSize = () => {
+    if (typeof window !== "undefined") {
+      if (window.innerWidth >= 1024) return AVATAR_SIZE_PC; // lg
+      return AVATAR_SIZE_MOBILE;
+    }
+    return AVATAR_SIZE_MOBILE;
+  };
+
+  // 위치 계산 (비율 기반)
+  const avatarSize = getAvatarSize();
+  const left = `calc(${(pos.x / GRID_WIDTH) * 100}% - ${avatarSize / 2}px)`;
+  const top = `calc(${(pos.y / GRID_HEIGHT) * 100}% - ${avatarSize}px)`;
+
   return (
-    <div className="w-screen h-screen bg-black flex items-center justify-center">
-      {/* 검은 배경 + 맵 중앙 정렬 */}
-      <div className="relative bg-black flex items-center justify-center size-full">
-        {/* 맵 영역 (반응형, 16:9 비율 유지) */}
+    <div className="w-screen h-screen bg-[var(--gray-2)] flex items-center justify-center">
+      <div className="relative bg-[var(--black)] flex items-center justify-center w-full h-full">
         <div
-          className="relative aspect-[16/20] md:aspect-[16/9] w-full bg-cover bg-center"
+          className="
+            relative
+            aspect-[3/4] md:aspect-[16/9]
+            w-full max-w-[1200px]
+            max-h-[90vh] min-w-[200px] md:min-w-[320px]
+            min-h-[180px] bg-cover bg-center
+          "
           style={{
             backgroundImage: "url('/img/bg-map.png')",
           }}
@@ -56,13 +83,22 @@ const CharacterPage = () => {
             </div>
           </div>
           {/* 아바타 */}
-          <div className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
+          <div
+            className="absolute z-10"
+            style={{
+              left,
+              top,
+              width: avatarSize,
+              height: avatarSize,
+              transition: "left 0.1s, top 0.1s, width 0.2s, height 0.2s",
+            }}
+          >
             <Image
               src="/img/npc1.png"
               alt="아바타"
-              width={96}
-              height={96}
-              className="object-contain drop-shadow-lg"
+              width={avatarSize}
+              height={avatarSize}
+              className="object-contain drop-shadow-lg w-16 h-16 md:w-24 md:h-24 lg:w-28 lg:h-28"
               draggable={false}
               priority
             />
