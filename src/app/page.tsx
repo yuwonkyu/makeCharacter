@@ -17,7 +17,7 @@ export default function Landing() {
         style={{ background: "var(--gradient-blue)" }}
         onClick={() => router.push("/main")}
       >
-        Home
+        Start
       </button>
     </div>
   );
