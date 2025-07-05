@@ -122,26 +122,26 @@ const CharacterPage = () => {
         </div>
         {/* 모바일에서만 표시되는 이동 버튼 */}
         {isMobile && (
-          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2">
+          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-0.5 ">
             {/* 위쪽 버튼 */}
             <button
-              className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md"
+              className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md opacity-85"
               style={{ background: "var(--gradient-blue)" }}
               onClick={() => move(0, -1)}
             >
               ↑
             </button>
             {/* 좌/우 버튼 */}
-            <div className="flex flex-row gap-8">
+            <div className="flex flex-row gap-14">
               <button
-                className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md"
+                className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md opacity-85"
                 style={{ background: "var(--gradient-blue)" }}
                 onClick={() => move(-1, 0)}
               >
                 ←
               </button>
               <button
-                className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md"
+                className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md opacity-85"
                 style={{ background: "var(--gradient-blue)" }}
                 onClick={() => move(1, 0)}
               >
@@ -150,7 +150,7 @@ const CharacterPage = () => {
             </div>
             {/* 아래쪽 버튼 */}
             <button
-              className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md"
+              className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md opacity-85"
               style={{ background: "var(--gradient-blue)" }}
               onClick={() => move(0, 1)}
             >
