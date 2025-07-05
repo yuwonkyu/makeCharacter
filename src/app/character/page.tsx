@@ -123,28 +123,35 @@ const CharacterPage = () => {
         {/* 모바일에서만 표시되는 이동 버튼 */}
         {isMobile && (
           <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2">
+            {/* 위쪽 버튼 */}
             <button
-              className="w-12 h-12 rounded-full bg-black/60 text-white text-2xl mb-2"
+              className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md"
+              style={{ background: "var(--gradient-blue)" }}
               onClick={() => move(0, -1)}
             >
               ↑
             </button>
-            <div className="flex gap-2">
+            {/* 좌/우 버튼 */}
+            <div className="flex flex-row gap-8">
               <button
-                className="w-12 h-12 rounded-full bg-black/60 text-white text-2xl"
+                className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md"
+                style={{ background: "var(--gradient-blue)" }}
                 onClick={() => move(-1, 0)}
               >
                 ←
               </button>
               <button
-                className="w-12 h-12 rounded-full bg-black/60 text-white text-2xl"
+                className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md"
+                style={{ background: "var(--gradient-blue)" }}
                 onClick={() => move(1, 0)}
               >
                 →
               </button>
             </div>
+            {/* 아래쪽 버튼 */}
             <button
-              className="w-12 h-12 rounded-full bg-black/60 text-white text-2xl mt-2"
+              className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md"
+              style={{ background: "var(--gradient-blue)" }}
               onClick={() => move(0, 1)}
             >
               ↓
