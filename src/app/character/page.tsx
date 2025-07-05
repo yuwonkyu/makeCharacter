@@ -3,16 +3,24 @@
 import Image from "next/image";
 import { useAvatarMove } from "@/hooks/useAvatarMove";
 import { useEffect, useState } from "react";
+import BlueSpinner from "@/components/lodding/BlueSpinner";
 
 const CharacterPage = () => {
   const { pos, GRID_WIDTH, GRID_HEIGHT, setPos, canMove } = useAvatarMove();
   const [isMobile, setIsMobile] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useEffect(() => {
+    // 예시: 1초 후 로딩 해제 (실제 fetch 등과 연동 가능)
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   // 이동 함수
@@ -39,6 +47,8 @@ const CharacterPage = () => {
   const avatarSize = getAvatarSize();
   const left = `calc(${(pos.x / GRID_WIDTH) * 100}% - ${avatarSize / 2}px)`;
   const top = `calc(${(pos.y / GRID_HEIGHT) * 100}% - ${avatarSize}px)`;
+
+  if (loading) return <BlueSpinner />;
 
   return (
     <div className="w-screen h-screen bg-[var(--gray-2)] flex items-center justify-center">
