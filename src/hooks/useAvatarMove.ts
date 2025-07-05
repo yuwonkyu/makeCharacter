@@ -109,6 +109,8 @@ export function useAvatarMove(
   // 현재 적용되는 맵 정보 반환
   return {
     pos,
+    setPos, // 추가!
+    canMove, //
     GRID_WIDTH: isMobile ? GRID_WIDTH_MOBILE : GRID_WIDTH_PC,
     GRID_HEIGHT: isMobile ? GRID_HEIGHT_MOBILE : GRID_HEIGHT_PC,
     mapGrid: isMobile ? mapGridMobile : mapGridPC,

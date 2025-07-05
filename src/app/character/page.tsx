@@ -2,9 +2,25 @@
 
 import Image from "next/image";
 import { useAvatarMove } from "@/hooks/useAvatarMove";
+import { useEffect, useState } from "react";
 
 const CharacterPage = () => {
-  const { pos, GRID_WIDTH, GRID_HEIGHT } = useAvatarMove();
+  const { pos, GRID_WIDTH, GRID_HEIGHT, setPos, canMove } = useAvatarMove();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // 이동 함수
+  const move = (dx: number, dy: number) => {
+    const x = pos.x + dx;
+    const y = pos.y + dy;
+    if (canMove(x, y)) setPos({ x, y });
+  };
 
   // 아바타 크기: 모바일/태블릿/PC별로 다르게
   const AVATAR_SIZE_MOBILE = 64;
@@ -104,6 +120,37 @@ const CharacterPage = () => {
             />
           </div>
         </div>
+        {/* 모바일에서만 표시되는 이동 버튼 */}
+        {isMobile && (
+          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2">
+            <button
+              className="w-12 h-12 rounded-full bg-black/60 text-white text-2xl mb-2"
+              onClick={() => move(0, -1)}
+            >
+              ↑
+            </button>
+            <div className="flex gap-2">
+              <button
+                className="w-12 h-12 rounded-full bg-black/60 text-white text-2xl"
+                onClick={() => move(-1, 0)}
+              >
+                ←
+              </button>
+              <button
+                className="w-12 h-12 rounded-full bg-black/60 text-white text-2xl"
+                onClick={() => move(1, 0)}
+              >
+                →
+              </button>
+            </div>
+            <button
+              className="w-12 h-12 rounded-full bg-black/60 text-white text-2xl mt-2"
+              onClick={() => move(0, 1)}
+            >
+              ↓
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
