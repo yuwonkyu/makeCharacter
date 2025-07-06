@@ -58,7 +58,12 @@ const CharacterPage = () => {
   const left = `calc(${(pos.x / GRID_WIDTH) * 100}% - ${avatarSize / 2}px)`;
   const top = `calc(${(pos.y / GRID_HEIGHT) * 100}% - ${avatarSize}px)`;
 
-  if (loading) return <BlueSpinner text={TEXT.loading[language]} />;
+  if (loading)
+    return (
+      <div className="bg-black w-screen h-screen flex items-center justify-center">
+        <BlueSpinner text={TEXT.loading[language]} />
+      </div>
+    );
 
   return (
     <div className="w-screen h-screen bg-[var(--gray-2)] flex items-center justify-center">

@@ -61,7 +61,14 @@ export default function Settings() {
     router.push("/main");
   };
 
-  if (loading) return <BlueSpinner text={TEXT.loading[tempLanguage]} />;
+  if (loading) {
+    return (
+      <div>
+        <BgImage src="/img/bg-summer.png" overlay="full" />
+        <BlueSpinner text={TEXT.loading[tempLanguage]} />
+      </div>
+    );
+  }
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-[var(--blue-2)] overflow-hidden">
