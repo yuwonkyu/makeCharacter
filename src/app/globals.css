@@ -19,12 +19,15 @@
   --white: #ffffff;
   --black: #000000;
   --gray-1: #406485;
-  --gray-2: #ededed;
+  --gray-2: #8d8985;
+  --gray-3: #7a8c8b;
+  --gray-4: #dcdad9;
   --blue-1: #81a8dc;
   --blue-2: #dce5ee;
   --blue-3: #aec5f0;
   --blue-4: #d5e6f7;
   --blue-5: #acccec;
+  --blue-6: #d9e5f1;
   --purple-1: #676195;
   --purple-2: #b9afff;
   --purple-3: #8c81d8;
@@ -91,12 +94,12 @@ h6 {
 
 button {
   font-family: var(--font-main);
-  background: var(--primary);
   color: var(--gray-1);
   border: 1.5px solid var(--gray-1);
   cursor: pointer;
-  transition: background 0.2s;
+  box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.2);
 }
-button:hover {
-  background: var(--accent);
+
+.inset-dropdown {
+  box-shadow: inset 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
