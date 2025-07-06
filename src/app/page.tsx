@@ -1,9 +1,19 @@
 "use client";
 import BgImage from "@/components/common/BgImage";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Landing() {
   const router = useRouter();
+  const { language } = useLanguage();
+
+  // 다국어 텍스트 객체
+  const START_TEXT = {
+    en: "Start",
+    ko: "시작하기",
+    jp: "スタート",
+  };
+
   return (
     <div className="relative min-h-screen w-full">
       {/* 배경 이미지 */}
@@ -17,7 +27,7 @@ export default function Landing() {
         style={{ background: "var(--gradient-blue)" }}
         onClick={() => router.push("/main")}
       >
-        Start
+        {START_TEXT[language]}
       </button>
     </div>
   );

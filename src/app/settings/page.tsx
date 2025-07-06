@@ -4,10 +4,11 @@ import { useRouter } from "next/navigation";
 import BlueSpinner from "@/components/lodding/BlueSpinner";
 import BgImage from "@/components/common/BgImage";
 import OptionPanel from "@/components/settings/OptionPanel";
+import { useLanguage } from "@/contexts/LanguageContext"; // 추가
 
 export default function Settings() {
   const [loading, setLoading] = useState(true);
-  const [language, setLanguage] = useState("en");
+  const { language, setLanguage } = useLanguage(); // 전역 언어 사용
   const [color, setColor] = useState("sky");
   const router = useRouter();
 
@@ -18,12 +19,18 @@ export default function Settings() {
 
   // 저장
   const handleSave = () => {
-    alert("Saved");
+    alert(language === "ko" ? "저장되었습니다" : "Saved");
   };
 
   // 리셋
   const handleReset = () => {
-    if (window.confirm("Are you sure you want to reset?")) {
+    if (
+      window.confirm(
+        language === "ko"
+          ? "정말로 초기화하시겠습니까?"
+          : "Are you sure you want to reset?"
+      )
+    ) {
       setLanguage("ko");
       setColor("sky");
     }
@@ -34,7 +41,7 @@ export default function Settings() {
     router.push("/");
   };
 
-  if (loading) return <BlueSpinner text="환경설정 불러오는 중..." />;
+  if (loading) return <BlueSpinner text="Loading settings..." />;
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-[var(--blue-2)] overflow-hidden">

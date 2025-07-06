@@ -1,9 +1,30 @@
 "use client";
 import BgImage from "@/components/common/BgImage";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function MainPage() {
   const router = useRouter();
+  const { language } = useLanguage();
+
+  // 다국어 텍스트
+  const TEXT = {
+    character: {
+      en: "Character",
+      ko: "캐릭터",
+      jp: "キャラクター",
+    },
+    customizing: {
+      en: "Customizing",
+      ko: "커스터마이징",
+      jp: "カスタマイズ",
+    },
+    settings: {
+      en: "Settings",
+      ko: "설정",
+      jp: "設定",
+    },
+  };
 
   return (
     <div className="relative min-h-screen flex flex-col items-center">
@@ -32,7 +53,7 @@ export default function MainPage() {
               style={{ background: "var(--gradient-blue)" }}
               onClick={() => router.push("/character")}
             >
-              Character
+              {TEXT.character[language]}
             </button>
             <button
               className="
@@ -46,7 +67,7 @@ export default function MainPage() {
               style={{ background: "var(--gradient-blue)" }}
               onClick={() => router.push("/customize")}
             >
-              Customizing
+              {TEXT.customizing[language]}
             </button>
             <button
               className="
@@ -60,7 +81,7 @@ export default function MainPage() {
               style={{ background: "var(--gradient-blue)" }}
               onClick={() => router.push("/settings")}
             >
-              Settings
+              {TEXT.settings[language]}
             </button>
           </div>
         </div>

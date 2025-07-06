@@ -1,9 +1,11 @@
 import React from "react";
 import Image from "next/image";
 
+type Language = "en" | "ko" | "jp";
+
 type OptionPanelProps = {
-  language: string;
-  setLanguage: (lang: string) => void;
+  language: Language;
+  setLanguage: (lang: Language) => void;
   color: string;
   setColor: (color: string) => void;
   onSave?: () => void;
@@ -33,37 +35,82 @@ export default function OptionPanel({
   onClose,
 }: OptionPanelProps) {
   return (
-    <div className="w-[340px] rounded-2xl shadow-lg border border-[#aec5f0] bg-[#fcfbfa] p-0 relative">
+    <div
+      className="w-[340px] rounded-2xl shadow-lg border p-0 relative"
+      style={{
+        borderColor: "var(--blue-3)",
+        background: "var(--accent-5)",
+      }}
+    >
       {/* 헤더 */}
-      <div className="flex items-center justify-between rounded-t-2xl bg-gradient-to-b from-[#d5e6f7] to-[#aec5f0] px-4 py-2 border-b border-[#aec5f0] relative">
-        <span className="text-2xl font-bold text-[#406485] mx-auto">Option</span>
+      <div
+        className="flex items-center justify-between rounded-t-2xl px-4 py-2 border-b relative"
+        style={{
+          background: "var(--gradient-blue)",
+          borderColor: "var(--blue-3)",
+        }}
+      >
+        <span
+          className="text-2xl font-bold mx-auto"
+          style={{ color: "var(--gray-1)" }}
+        >
+          Option
+        </span>
         {onClose && (
           <button
-            className="absolute right-3 top-2 w-7 h-7 flex items-center justify-center rounded hover:bg-[#e4e0dd]"
+            className="absolute right-3 top-2 w-7 h-7 flex items-center justify-center rounded hover:bg-[var(--blue-4)]"
             onClick={onClose}
             aria-label="닫기"
           >
-            <Image src="/icon/cancel.svg" alt="닫기" width={20} height={20} className="w-5 h-5" />
+            <Image
+              src="/icon/cancel.svg"
+              alt="닫기"
+              width={20}
+              height={20}
+              className="w-5 h-5"
+            />
           </button>
         )}
       </div>
       {/* 내용 */}
       <div className="px-0 py-0">
-        <div className="grid grid-cols-2 border-t border-[#e4e0dd] border-b divide-x divide-[#e4e0dd]">
+        <div
+          className="grid grid-cols-2 border-t border-b divide-x"
+          style={{
+            borderColor: "var(--accent-6)",
+          }}
+        >
           <div className="flex flex-col gap-8 py-8 pl-8 pr-4">
-            <span className="text-xl font-bold text-[#8d8985]">language</span>
-            <span className="text-xl font-bold text-[#8d8985]">Color</span>
+            <span
+              className="text-xl font-bold"
+              style={{ color: "var(--gray-1)" }}
+            >
+              language
+            </span>
+            <span
+              className="text-xl font-bold"
+              style={{ color: "var(--gray-1)" }}
+            >
+              Color
+            </span>
           </div>
           <div className="flex flex-col gap-8 py-8 pl-4 pr-8">
             {/* 언어 드롭다운 */}
             <div className="relative">
               <select
-                className="w-full rounded border border-[#aec5f0] bg-[#d5e6f7] px-3 py-1 text-[#406485] font-semibold focus:outline-none appearance-none pr-8"
+                className="w-full rounded border px-3 py-1 font-semibold focus:outline-none appearance-none pr-8"
+                style={{
+                  borderColor: "var(--blue-3)",
+                  background: "var(--blue-4)",
+                  color: "var(--gray-1)",
+                }}
                 value={language}
-                onChange={e => setLanguage(e.target.value)}
+                onChange={(e) => setLanguage(e.target.value as Language)}
               >
-                {LANGUAGES.map(l => (
-                  <option key={l.value} value={l.value}>{l.label}</option>
+                {LANGUAGES.map((l) => (
+                  <option key={l.value} value={l.value}>
+                    {l.label}
+                  </option>
                 ))}
               </select>
               <Image
@@ -77,12 +124,19 @@ export default function OptionPanel({
             {/* 컬러 드롭다운 */}
             <div className="relative">
               <select
-                className="w-full rounded border border-[#aec5f0] bg-[#d5e6f7] px-3 py-1 text-[#406485] font-semibold focus:outline-none appearance-none pr-8"
+                className="w-full rounded border px-3 py-1 font-semibold focus:outline-none appearance-none pr-8"
+                style={{
+                  borderColor: "var(--blue-3)",
+                  background: "var(--blue-4)",
+                  color: "var(--gray-1)",
+                }}
                 value={color}
-                onChange={e => setColor(e.target.value)}
+                onChange={(e) => setColor(e.target.value)}
               >
-                {COLORS.map(c => (
-                  <option key={c.value} value={c.value}>{c.label}</option>
+                {COLORS.map((c) => (
+                  <option key={c.value} value={c.value}>
+                    {c.label}
+                  </option>
                 ))}
               </select>
               <Image
@@ -97,15 +151,30 @@ export default function OptionPanel({
         </div>
       </div>
       {/* 하단 버튼 */}
-      <div className="flex gap-6 px-8 py-6 bg-gradient-to-t from-[#d5e6f7] to-[#e4e0dd] rounded-b-2xl">
+      <div
+        className="flex gap-6 px-8 py-6 rounded-b-2xl"
+        style={{
+          background: "var(--gradient-blue)",
+        }}
+      >
         <button
-          className="flex-1 py-2 rounded border border-[#aec5f0] bg-gradient-to-b from-[#e4e0dd] to-[#aec5f0] text-[#406485] font-bold shadow"
+          className="flex-1 py-2 rounded border font-bold shadow"
+          style={{
+            borderColor: "var(--blue-3)",
+            background: "var(--blue-4)",
+            color: "var(--gray-1)",
+          }}
           onClick={onSave}
         >
           Save
         </button>
         <button
-          className="flex-1 py-2 rounded border border-[#aec5f0] bg-gradient-to-b from-[#e4e0dd] to-[#aec5f0] text-[#406485] font-bold shadow"
+          className="flex-1 py-2 rounded border font-bold shadow"
+          style={{
+            borderColor: "var(--blue-3)",
+            background: "var(--blue-4)",
+            color: "var(--gray-1)",
+          }}
           onClick={onReset}
         >
           Reset
