@@ -4,11 +4,21 @@ import Image from "next/image";
 import { useAvatarMove } from "@/hooks/useAvatarMove";
 import { useEffect, useState } from "react";
 import BlueSpinner from "@/components/lodding/BlueSpinner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const CharacterPage = () => {
   const { pos, GRID_WIDTH, GRID_HEIGHT, setPos, canMove } = useAvatarMove();
   const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { language } = useLanguage();
+
+  const TEXT = {
+    loading: {
+      en: "Loading character...",
+      ko: "캐릭터 불러오는 중...",
+      jp: "キャラクターを読み込み中...",
+    },
+  };
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -19,7 +29,7 @@ const CharacterPage = () => {
 
   useEffect(() => {
     // 예시: 1초 후 로딩 해제 (실제 fetch 등과 연동 가능)
-    const timer = setTimeout(() => setLoading(false), 1000);
+    const timer = setTimeout(() => setLoading(false), 300);
     return () => clearTimeout(timer);
   }, []);
 
@@ -48,7 +58,7 @@ const CharacterPage = () => {
   const left = `calc(${(pos.x / GRID_WIDTH) * 100}% - ${avatarSize / 2}px)`;
   const top = `calc(${(pos.y / GRID_HEIGHT) * 100}% - ${avatarSize}px)`;
 
-  if (loading) return <BlueSpinner />;
+  if (loading) return <BlueSpinner text={TEXT.loading[language]} />;
 
   return (
     <div className="w-screen h-screen bg-[var(--gray-2)] flex items-center justify-center">

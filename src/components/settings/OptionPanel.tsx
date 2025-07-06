@@ -1,16 +1,33 @@
 import React from "react";
 import Image from "next/image";
+import type { Language, OptionPanelProps } from "./settings.d";
 
-type Language = "en" | "ko" | "jp";
-
-type OptionPanelProps = {
-  language: Language;
-  setLanguage: (lang: Language) => void;
-  color: string;
-  setColor: (color: string) => void;
-  onSave?: () => void;
-  onReset?: () => void;
-  onClose?: () => void;
+const TEXT = {
+  option: {
+    en: "Option",
+    ko: "옵션",
+    jp: "オプション",
+  },
+  language: {
+    en: "Language",
+    ko: "언어",
+    jp: "言語",
+  },
+  color: {
+    en: "Color",
+    ko: "색상",
+    jp: "色",
+  },
+  save: {
+    en: "Save",
+    ko: "저장",
+    jp: "保存",
+  },
+  reset: {
+    en: "Reset",
+    ko: "초기화",
+    jp: "リセット",
+  },
 };
 
 const LANGUAGES = [
@@ -54,7 +71,7 @@ export default function OptionPanel({
           className="text-2xl font-bold mx-auto"
           style={{ color: "var(--gray-1)" }}
         >
-          Option
+          {TEXT.option[language]}
         </span>
         {onClose && (
           <button
@@ -85,13 +102,13 @@ export default function OptionPanel({
               className="text-xl font-bold"
               style={{ color: "var(--gray-1)" }}
             >
-              language
+              {TEXT.language[language]}
             </span>
             <span
               className="text-xl font-bold"
               style={{ color: "var(--gray-1)" }}
             >
-              Color
+              {TEXT.color[language]}
             </span>
           </div>
           <div className="flex flex-col gap-8 py-8 pl-4 pr-8">
@@ -166,7 +183,7 @@ export default function OptionPanel({
           }}
           onClick={onSave}
         >
-          Save
+          {TEXT.save[language]}
         </button>
         <button
           className="flex-1 py-2 rounded border font-bold shadow"
@@ -177,7 +194,7 @@ export default function OptionPanel({
           }}
           onClick={onReset}
         >
-          Reset
+          {TEXT.reset[language]}
         </button>
       </div>
     </div>
