@@ -31,16 +31,16 @@ export default function MainPage() {
       {/* 배경 이미지 */}
       <BgImage src="/img/bg-summer.png" overlay="full" />
       {/* 메뉴 박스 */}
-      <div className="relative z-20 flex flex-1 items-center justify-center w-full">
+      <div className="relative z-20 flex flex-1 items-center justify-center w-full ">
         <div
           className="
-            rounded-2xl shadow-2xl border-2 border-[var(--accent-1)]
+            rounded-2xl shadow-2xl border-2 border-accent-1
             p-6 mt-auto mb-[10vh]            
             flex flex-col items-center
-          "
-          style={{ background: "var(--gradient-blue)" }}
+          bg-gradient-blue-custom
+            "
         >
-          <div className="p-0.1 flex flex-col gap-0.5 items-center border-2 border-[var(--blue-1)] rounded-[6px] bg-[var(--blue-1)] ">
+          <div className="p-0.1 flex flex-col gap-0.5 items-center border-2 border-blue-1 rounded-[6px] bg-blue-1">
             <button
               className="
                 w-full
@@ -49,8 +49,8 @@ export default function MainPage() {
                 text-xl font-bold md:text-2xl
                 rounded-[6px] transition-all
                 hover:scale-[1.03] hover:shadow-lg focus:outline-none
+                bg-gradient-blue-custom
               "
-              style={{ background: "var(--gradient-blue)" }}
               onClick={() => router.push("/character")}
             >
               {TEXT.character[language]}
@@ -63,8 +63,8 @@ export default function MainPage() {
                 text-xl font-bold md:text-2xl
                 rounded-[6px] transition-all
                 hover:scale-[1.03] hover:shadow-lg focus:outline-none
+                bg-gradient-blue-custom
               "
-              style={{ background: "var(--gradient-blue)" }}
               onClick={() => router.push("/customize")}
             >
               {TEXT.customizing[language]}
@@ -77,8 +77,8 @@ export default function MainPage() {
                 text-xl font-bold md:text-2xl
                 rounded-[6px] transition-all
                 hover:scale-[1.03] hover:shadow-lg focus:outline-none
+                bg-gradient-blue-custom
               "
-              style={{ background: "var(--gradient-blue)" }}
               onClick={() => router.push("/settings")}
             >
               {TEXT.settings[language]}

@@ -45,7 +45,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        <link rel="icon" href="/img/npc1.png" type="image/png" />
+        <link rel="icon" href="/img/victor-fa.png" type="image/png" />
       </head>
       <body>
         <LanguageProvider>{children}</LanguageProvider>
