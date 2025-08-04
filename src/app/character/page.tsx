@@ -2,12 +2,14 @@
 
 import Image from "next/image";
 import { useAvatarMove } from "@/hooks/useAvatarMove";
+import { useCharacterStore } from "@/store/characterStore";
 import { useEffect, useState } from "react";
 import BlueSpinner from "@/components/lodding/BlueSpinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const CharacterPage = () => {
   const { pos, GRID_WIDTH, GRID_HEIGHT, setPos, canMove } = useAvatarMove();
+  const { form } = useCharacterStore();
   const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(true);
   const { language } = useLanguage();
@@ -89,31 +91,51 @@ const CharacterPage = () => {
               </span>
             </div>
             <div className="flex items-center mb-0.5 text-[10px]">
-              <span className="flex items-center border border-black justify-center font-bold h-[15px] bg-black/90 rounded-l-[4px] rounded-r-[6px] px-[7px] ">
+              <span className="flex items-center border border-black justify-center font-bold h-[15px] bg-black/90 rounded-l-[4px] rounded-r-[6px] px-[7px] w-[35px]">
                 HP
               </span>
-              <div className="h-[15px] w-[129px] rounded-r-[6px] bg-gradient-orange-custom" />
-              <span>100/100</span>
+              <div className="h-[15px] w-[129px] rounded-r-[6px] bg-gray-4/40 overflow-hidden flex items-center mr-2">
+                <div
+                  className="h-full bg-gradient-orange-custom rounded-r-[6px] transition-all duration-300"
+                  style={{
+                    width: `${Math.max(
+                      0,
+                      Math.min(100, Number(form["체력"]) || 100)
+                    )}%`,
+                  }}
+                />
+              </div>
+              <span>{form["체력"] || "100"}/100</span>
             </div>
             <div className="flex items-center mb-0.5 text-[10px]">
-              <span className="flex items-center border border-black justify-center font-bold h-[15px] bg-black/90 rounded-l-[4px] rounded-r-[6px] px-[7px] ">
+              <span className="flex items-center border border-black justify-center font-bold h-[15px] bg-black/90 rounded-l-[4px] rounded-r-[6px] px-[7px] w-[35px]">
                 MP
               </span>
-              <div className="h-[15px] w-[129px] rounded-r-[6px] bg-gradient-purple-custom" />
-              <span>100/100</span>
+              <div className="h-[15px] w-[129px] rounded-r-[6px] bg-gray-4/40 overflow-hidden flex items-center mr-2">
+                <div
+                  className="h-full bg-gradient-purple-custom rounded-r-[6px] transition-all duration-300"
+                  style={{
+                    width: `${Math.max(
+                      0,
+                      Math.min(100, Number(form["마력"]) || 100)
+                    )}%`,
+                  }}
+                />
+              </div>
+              <span>{form["마력"] || "100"}/100</span>
             </div>
             <div className="flex flex-col flex-wrap items-end pr-4 gap-y-0.1 text-[9px]">
               <div>
-                WEIGHT <span className="ml-2">80</span>
+                WEIGHT <span className="ml-2">{form["무게"] || "80"}</span>
               </div>
               <div>
-                HIGHT <span className="ml-2">177</span>
+                HEIGHT <span className="ml-2">{form["키"] || "177"}</span>
               </div>
               <div>
-                I.Q <span className="ml-2">124</span>
+                I.Q <span className="ml-2">{form["IQ"] || "124"}</span>
               </div>
               <div>
-                MBTI <span className="ml-2">INTP</span>
+                MBTI <span className="ml-2">{form["MBTI"] || "INTP"}</span>
               </div>
             </div>
           </div>

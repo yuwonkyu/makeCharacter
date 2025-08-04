@@ -42,23 +42,11 @@ body {
   --color-gradient-orange-from: #a15a40;
   --color-gradient-orange-to: #ffaf7c;
   --color-gradient-orange-middle: #cb7348;
-  /* --color-gradient-blue: linear-gradient(180deg, #dce5ee 0%, #acccec 100%);
-  --color-gradient-purple: linear-gradient(
-    180deg,
-    #676195 7%,
-    #b9afff 17%,
-    #8c81d8 29%
-  );
-  --color-gradient-orange: linear-gradient(
-    180deg,
-    #a15a40 7%,
-    #ffaf7c 17%,
-    #cb7348 29%
-  ); */
+  --font-main: "NEXON Lv2 Gothic", Arial, Helvetica, sans-serif;
 }
 
 button {
-  @apply font-[var(--font-main)] text-gray-1 border border-gray-1 cursor-pointer shadow-md;
+  @apply text-gray-1 font-bold border border-gray-1 cursor-pointer shadow-md;
   border-width: 1.5px;
   box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.2);
 }
