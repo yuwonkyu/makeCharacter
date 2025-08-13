@@ -1,105 +1,79 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: "NEXON Lv2 Gothic";
+body {
   src: url("/fonts/ttf/NEXON_Lv2_Gothic.ttf") format("truetype");
+  font-family: "NEXON Lv2 Gothic", Arial, Helvetica, sans-serif;
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+  background: #ffffff;
+  foreground: #171717;
+  accent-color: #f87171;
+  primary-color: #3b82f6;
 }
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --primary: #3b82f6;
-  --accent: #f87171;
+@theme {
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-gray-1: #406485;
+  --color-gray-2: #8d8985;
+  --color-gray-3: #7a8c8b;
+  --color-gray-4: #dcdad9;
+  --color-blue-1: #81a8dc;
+  --color-blue-2: #dce5ee;
+  --color-blue-3: #aec5f0;
+  --color-blue-4: #d5e6f7;
+  --color-blue-5: #acccec;
+  --color-blue-6: #d9e5f1;
+  --color-purple-1: #676195;
+  --color-purple-2: #b9afff;
+  --color-purple-3: #8c81d8;
+  --color-red-1: #f87171;
+  --color-accent-1: #5f6364;
+  --color-accent-2: #a15a40;
+  --color-accent-3: #ffaf7c;
+  --color-accent-4: #cb7348;
+  --color-accent-5: #faf6f3;
+  --color-accent-6: #acccec;
+  --color-gradient-blue-from: #dce5ee;
+  --color-gradient-blue-to: #acccec;
+  --color-gradient-purple-from: #676195;
+  --color-gradient-purple-to: #b9afff;
+  --color-gradient-purple-middle: #8c81d8;
+  --color-gradient-orange-from: #a15a40;
+  --color-gradient-orange-to: #ffaf7c;
+  --color-gradient-orange-middle: #cb7348;
   --font-main: "NEXON Lv2 Gothic", Arial, Helvetica, sans-serif;
-
-  /* 단일 컬러 변수 */
-  --white: #ffffff;
-  --black: #000000;
-  --gray-1: #406485;
-  --gray-2: #8d8985;
-  --gray-3: #7a8c8b;
-  --gray-4: #dcdad9;
-  --blue-1: #81a8dc;
-  --blue-2: #dce5ee;
-  --blue-3: #aec5f0;
-  --blue-4: #d5e6f7;
-  --blue-5: #acccec;
-  --blue-6: #d9e5f1;
-  --purple-1: #676195;
-  --purple-2: #b9afff;
-  --purple-3: #8c81d8;
-  --red-1: #f87171;
-  --accent-1: #5f6364;
-  --accent-2: #a15a40;
-  --accent-3: #ffaf7c;
-  --accent-4: #cb7348;
-  --accent-5: #faf6f3;
-  --accent-6: #acccec;
-
-  /* 그라데이션 블루(1,2 통합) */
-  --gradient-blue: linear-gradient(180deg, #dce5ee 0%, #acccec 100%);
-  /* 그라데이션 퍼플 */
-  --gradient-purple: linear-gradient(
-    180deg,
-    #676195 7%,
-    #b9afff 17%,
-    #8c81d8 29%
-  );
-  /* 그라데이션 오렌지 */
-  --gradient-orange: linear-gradient(
-    180deg,
-    #a15a40 7%,
-    #ffaf7c 17%,
-    #cb7348 29%
-  );
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --primary: #60a5fa;
-    --accent: #fca5a5;
-  }
-}
-
-body {
-  font-family: "NEXON Lv2 Gothic", Arial, Helvetica, sans-serif;
-  background: var(--background);
-  color: var(--foreground);
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-main);
-  font-weight: bold;
 }
 
 button {
-  font-family: var(--font-main);
-  color: var(--gray-1);
-  border: 1.5px solid var(--gray-1);
-  cursor: pointer;
+  @apply text-gray-1 font-bold border border-gray-1 cursor-pointer shadow-md;
+  border-width: 1.5px;
   box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.2);
 }
-
+/* 2색/3색 그라데이션 커스텀 클래스 */
+.bg-gradient-blue-custom {
+  background: linear-gradient(
+    180deg,
+    var(--color-gradient-blue-from) 0%,
+    var(--color-gradient-blue-to) 100%
+  );
+}
+.bg-gradient-purple-custom {
+  background: linear-gradient(
+    180deg,
+    var(--color-gradient-purple-from) 7%,
+    var(--color-gradient-purple-to) 17%,
+    var(--color-gradient-purple-middle) 29%
+  );
+}
+.bg-gradient-orange-custom {
+  background: linear-gradient(
+    180deg,
+    var(--color-gradient-orange-from) 7%,
+    var(--color-gradient-orange-to) 17%,
+    var(--color-gradient-orange-middle) 29%
+  );
+}
 .inset-dropdown {
   box-shadow: inset 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }

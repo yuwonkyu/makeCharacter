@@ -2,12 +2,14 @@
 
 import Image from "next/image";
 import { useAvatarMove } from "@/hooks/useAvatarMove";
+import { useCharacterStore } from "@/store/characterStore";
 import { useEffect, useState } from "react";
 import BlueSpinner from "@/components/lodding/BlueSpinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const CharacterPage = () => {
   const { pos, GRID_WIDTH, GRID_HEIGHT, setPos, canMove } = useAvatarMove();
+  const { form } = useCharacterStore();
   const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(true);
   const { language } = useLanguage();
@@ -66,8 +68,8 @@ const CharacterPage = () => {
     );
 
   return (
-    <div className="w-screen h-screen bg-[var(--gray-2)] flex items-center justify-center">
-      <div className="relative bg-[var(--black)] flex items-center justify-center w-full h-full">
+    <div className="w-screen h-screen bg-gray-2 flex items-center justify-center">
+      <div className="relative bg-black flex items-center justify-center w-full h-full">
         <div
           className="
             relative
@@ -81,7 +83,7 @@ const CharacterPage = () => {
           }}
         >
           {/* 캐릭터 정보 패널 */}
-          <div className="absolute top-0 right-0 z-20 bg-black/50 rounded-[6px] px-2 py-2 text-white">
+          <div className="absolute top-0 right-0 z-20 bg-black/70 rounded-[6px] px-2 py-2 text-white">
             <div className="flex justify-between items-center mb-1">
               <span className="text-[10px] font-medium">Lv.1</span>
               <span className="text-[10px] font-medium mr-8">
@@ -89,37 +91,51 @@ const CharacterPage = () => {
               </span>
             </div>
             <div className="flex items-center mb-0.5 text-[10px]">
-              <span className="flex items-center border-1 border-black justify-center font-bold  h-[15px] bg-black/80 rounded-l-[4px] rounded-r-[6px] px-[7px] ">
+              <span className="flex items-center border border-black justify-center font-bold h-[15px] bg-black/90 rounded-l-[4px] rounded-r-[6px] px-[7px] w-[35px]">
                 HP
               </span>
-              <div
-                className="h-[15px] w-[129px] rounded-r-[6px]"
-                style={{ background: "var(--gradient-orange)" }}
-              />
-              <span>100/100</span>
+              <div className="h-[15px] w-[129px] rounded-r-[6px] bg-gray-4/40 overflow-hidden flex items-center mr-2">
+                <div
+                  className="h-full bg-gradient-orange-custom rounded-r-[6px] transition-all duration-300"
+                  style={{
+                    width: `${Math.max(
+                      0,
+                      Math.min(100, Number(form["체력"]) || 100)
+                    )}%`,
+                  }}
+                />
+              </div>
+              <span>{form["체력"] || "100"}/100</span>
             </div>
             <div className="flex items-center mb-0.5 text-[10px]">
-              <span className="flex items-center border-1 border-black justify-center font-bold  h-[15px] bg-black/80 rounded-l-[4px] rounded-r-[6px] px-[7px] ">
-                HP
+              <span className="flex items-center border border-black justify-center font-bold h-[15px] bg-black/90 rounded-l-[4px] rounded-r-[6px] px-[7px] w-[35px]">
+                MP
               </span>
-              <div
-                className="h-[15px] w-[129px] rounded-r-[6px]"
-                style={{ background: "var(--gradient-purple)" }}
-              />
-              <span>100/100</span>
+              <div className="h-[15px] w-[129px] rounded-r-[6px] bg-gray-4/40 overflow-hidden flex items-center mr-2">
+                <div
+                  className="h-full bg-gradient-purple-custom rounded-r-[6px] transition-all duration-300"
+                  style={{
+                    width: `${Math.max(
+                      0,
+                      Math.min(100, Number(form["마력"]) || 100)
+                    )}%`,
+                  }}
+                />
+              </div>
+              <span>{form["마력"] || "100"}/100</span>
             </div>
             <div className="flex flex-col flex-wrap items-end pr-4 gap-y-0.1 text-[9px]">
               <div>
-                WEIGHT <span className="ml-2">80</span>
+                WEIGHT <span className="ml-2">{form["무게"] || "80"}</span>
               </div>
               <div>
-                HIGHT <span className="ml-2">177</span>
+                HEIGHT <span className="ml-2">{form["키"] || "177"}</span>
               </div>
               <div>
-                I.Q <span className="ml-2">124</span>
+                I.Q <span className="ml-2">{form["IQ"] || "124"}</span>
               </div>
               <div>
-                MBTI <span className="ml-2">INTP</span>
+                MBTI <span className="ml-2">{form["MBTI"] || "INTP"}</span>
               </div>
             </div>
           </div>
@@ -150,8 +166,7 @@ const CharacterPage = () => {
           <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-0.5 ">
             {/* 위쪽 버튼 */}
             <button
-              className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md opacity-85"
-              style={{ background: "var(--gradient-blue)" }}
+              className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md opacity-85 bg-gradient-blue-custom"
               onClick={() => move(0, -1)}
             >
               ↑
@@ -159,15 +174,13 @@ const CharacterPage = () => {
             {/* 좌/우 버튼 */}
             <div className="flex flex-row gap-14">
               <button
-                className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md opacity-85"
-                style={{ background: "var(--gradient-blue)" }}
+                className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md opacity-85 bg-gradient-blue-custom"
                 onClick={() => move(-1, 0)}
               >
                 ←
               </button>
               <button
-                className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md opacity-85"
-                style={{ background: "var(--gradient-blue)" }}
+                className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md opacity-85 bg-gradient-blue-custom"
                 onClick={() => move(1, 0)}
               >
                 →
@@ -175,8 +188,7 @@ const CharacterPage = () => {
             </div>
             {/* 아래쪽 버튼 */}
             <button
-              className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md opacity-85"
-              style={{ background: "var(--gradient-blue)" }}
+              className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md opacity-85 bg-gradient-blue-custom"
               onClick={() => move(0, 1)}
             >
               ↓
