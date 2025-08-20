@@ -132,7 +132,7 @@ export default function CustomizePanel({
         {/* 왼쪽: 아바타 */}
         <div className="flex-1 flex items-center justify-center">
           <Image
-            src="/img/npc1.png"
+            src="/img/base.png"
             alt="아바타"
             width={220}
             height={220}
