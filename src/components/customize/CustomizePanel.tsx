@@ -7,10 +7,26 @@ import Input from "@/components/common/Input";
 import CustomSelect from "./CustomSelect";
 
 const categoryList = [
-  { label: "머리", type: "select", options: ["기본"] },
-  { label: "몸통", type: "select", options: ["기본"] },
-  { label: "다리", type: "select", options: ["기본"] },
-  { label: "신발", type: "select", options: ["기본"] },
+  {
+    label: "머리",
+    type: "select",
+    options: ["기본", "머리1", "머리2", "머리3", "머리4"],
+  },
+  {
+    label: "몸통",
+    type: "select",
+    options: ["기본", "상의1", "상의2", "상의3", "상의4"],
+  },
+  {
+    label: "다리",
+    type: "select",
+    options: ["기본", "하의1", "하의2", "하의3", "하의4"],
+  },
+  {
+    label: "신발",
+    type: "select",
+    options: ["기본", "신발1", "신발2", "신발3", "신발4"],
+  },
   { label: "체력", type: "input" },
   { label: "마력", type: "input" },
   { label: "무게", type: "input" },
@@ -129,16 +145,76 @@ export default function CustomizePanel({
       </div>
       {/* 본문 */}
       <div className="flex flex-row w-full h-[480px] bg-white py-70">
-        {/* 왼쪽: 아바타 */}
+        {/* 왼쪽: 캐릭터 미리보기 */}
         <div className="flex-1 flex items-center justify-center">
-          <Image
-            src="/img/base.png"
-            alt="아바타"
-            width={220}
-            height={220}
-            className="object-contain"
-            priority
-          />
+          <div className="relative w-[220px] h-[220px]">
+            {/* 베이스 캐릭터 */}
+            <Image
+              src="/img/base.png"
+              alt="베이스 캐릭터"
+              width={220}
+              height={220}
+              className="absolute inset-0 object-contain"
+              priority
+            />
+            
+            {/* 머리 파츠 */}
+            {form.머리 && form.머리 !== "기본" && (
+              <Image
+                src={`/img/parts/head/${form.머리}.png`}
+                alt="머리 파츠"
+                width={220}
+                height={220}
+                className="absolute inset-0 object-contain"
+                onError={(e) => {
+                  // 이미지 로드 실패 시 숨김
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            )}
+            
+            {/* 몸통 파츠 */}
+            {form.몸통 && form.몸통 !== "기본" && (
+              <Image
+                src={`/img/parts/body/${form.몸통}.png`}
+                alt="몸통 파츠"
+                width={220}
+                height={220}
+                className="absolute inset-0 object-contain"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            )}
+            
+            {/* 다리 파츠 */}
+            {form.다리 && form.다리 !== "기본" && (
+              <Image
+                src={`/img/parts/legs/${form.다리}.png`}
+                alt="다리 파츠"
+                width={220}
+                height={220}
+                className="absolute inset-0 object-contain"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            )}
+            
+            {/* 신발 파츠 */}
+            {form.신발 && form.신발 !== "기본" && (
+              <Image
+                src={`/img/parts/shoes/${form.신발}.png`}
+                alt="신발 파츠"
+                width={220}
+                height={220}
+                className="absolute inset-0 object-contain"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            )}
+          </div>
         </div>
         {/* 오른쪽: 카테고리/입력 */}
         <div className="flex-1 flex flex-col justify-center gap-3 px-8 py-6">
