@@ -147,17 +147,16 @@ export default function CustomizePanel({
       <div className="flex flex-row w-full h-[480px] bg-white py-70">
         {/* 왼쪽: 캐릭터 미리보기 */}
         <div className="flex-1 flex items-center justify-center">
-          <div className="relative w-[220px] h-[220px]">
+          <div className="relative size-[220px]">
             {/* 베이스 캐릭터 */}
             <Image
               src="/img/base.png"
               alt="베이스 캐릭터"
-              width={220}
-              height={220}
+              fill
               className="absolute inset-0 object-contain"
               priority
             />
-            
+
             {/* 머리 파츠 */}
             {form.머리 && form.머리 !== "기본" && (
               <Image
@@ -168,11 +167,11 @@ export default function CustomizePanel({
                 className="absolute inset-0 object-contain"
                 onError={(e) => {
                   // 이미지 로드 실패 시 숨김
-                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.style.display = "none";
                 }}
               />
             )}
-            
+
             {/* 몸통 파츠 */}
             {form.몸통 && form.몸통 !== "기본" && (
               <Image
@@ -182,11 +181,11 @@ export default function CustomizePanel({
                 height={220}
                 className="absolute inset-0 object-contain"
                 onError={(e) => {
-                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.style.display = "none";
                 }}
               />
             )}
-            
+
             {/* 다리 파츠 */}
             {form.다리 && form.다리 !== "기본" && (
               <Image
@@ -196,11 +195,11 @@ export default function CustomizePanel({
                 height={220}
                 className="absolute inset-0 object-contain"
                 onError={(e) => {
-                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.style.display = "none";
                 }}
               />
             )}
-            
+
             {/* 신발 파츠 */}
             {form.신발 && form.신발 !== "기본" && (
               <Image
@@ -210,7 +209,7 @@ export default function CustomizePanel({
                 height={220}
                 className="absolute inset-0 object-contain"
                 onError={(e) => {
-                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.style.display = "none";
                 }}
               />
             )}
