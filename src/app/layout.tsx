@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "나만의 게임 케릭터",
@@ -49,6 +50,7 @@ export default function RootLayout({
       </head>
       <body>
         <LanguageProvider>{children}</LanguageProvider>
+        <Analytics />
       </body>
     </html>
   );
