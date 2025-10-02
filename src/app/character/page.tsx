@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useAvatarMove } from "@/hooks/useAvatarMove";
 import { useCharacterStore } from "@/store/characterStore";
 import { useEffect, useState } from "react";
@@ -8,6 +9,7 @@ import BlueSpinner from "@/components/lodding/BlueSpinner";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const CharacterPage = () => {
+  const router = useRouter();
   const { pos, GRID_WIDTH, GRID_HEIGHT, setPos, canMove } = useAvatarMove();
   const { form } = useCharacterStore();
   const [isMobile, setIsMobile] = useState(false);
@@ -20,6 +22,11 @@ const CharacterPage = () => {
       ko: "캐릭터 불러오는 중...",
       jp: "キャラクターを読み込み中...",
     },
+  };
+
+  // 뒤로가기 핸들러
+  const handleGoBack = () => {
+    router.push("/main");
   };
 
   useEffect(() => {
@@ -82,6 +89,35 @@ const CharacterPage = () => {
             backgroundImage: "url('/img/bg-map.png')",
           }}
         >
+          {/* 뒤로가기 버튼 */}
+          <button
+            onClick={handleGoBack}
+            className="
+              absolute top-4 left-4 z-30 
+              w-12 h-12 
+              bg-gradient-blue-custom
+              hover:bg-blue-1
+              rounded-full 
+              flex items-center justify-center 
+              transition-all duration-200 
+              text-gray-1 font-bold border border-gray-1 cursor-pointer shadow-md
+              hover:shadow-lg
+              transform hover:scale-105
+            "
+            aria-label="뒤로가기"
+          >
+            <Image
+              src="/icon/back.svg"
+              alt="뒤로가기"
+              width={20}
+              height={20}
+              className="filter brightness-0 saturate-100"
+              style={{
+                filter:
+                  "invert(26%) sepia(16%) saturate(1003%) hue-rotate(173deg) brightness(93%) contrast(86%)",
+              }}
+            />
+          </button>
           {/* 캐릭터 정보 패널 */}
           <div className="absolute top-0 right-0 z-20 bg-black/70 rounded-[6px] px-2 py-2 text-white">
             <div className="flex justify-between items-center mb-1">
