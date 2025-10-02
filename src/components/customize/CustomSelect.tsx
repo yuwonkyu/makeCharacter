@@ -13,7 +13,7 @@ interface CustomSelectProps {
   selectText?: string;
 }
 
-export default function CustomSelect({
+const CustomSelect = React.memo(function CustomSelect({
   value,
   onChange,
   options,
@@ -49,4 +49,6 @@ export default function CustomSelect({
       </span>
     </div>
   );
-}
+});
+
+export default CustomSelect;

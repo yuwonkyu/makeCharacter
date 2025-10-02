@@ -5,6 +5,9 @@ type BgImageProps = {
   alt?: string;
   overlay?: "top-bottom" | "full";
   className?: string;
+  priority?: boolean;
+  unoptimized?: boolean;
+  sizes?: string;
 };
 
 export default function BgImage({
@@ -12,6 +15,9 @@ export default function BgImage({
   alt = "",
   overlay = "full",
   className = "",
+  priority = false,
+  unoptimized = process.env.NODE_ENV === "development",
+  sizes = "100vw",
 }: BgImageProps) {
   return (
     <div className={`absolute inset-0 w-full h-full z-0 ${className}`}>
@@ -20,7 +26,9 @@ export default function BgImage({
         alt={alt}
         fill
         className="object-cover"
-        priority
+        priority={priority}
+        unoptimized={unoptimized}
+        sizes={sizes}
         draggable={false}
       />
       {overlay === "full" && (

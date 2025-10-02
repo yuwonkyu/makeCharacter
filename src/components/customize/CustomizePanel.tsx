@@ -1,13 +1,21 @@
 "use client";
 
 import Image from "next/image";
+import React, { useCallback, useMemo } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCharacterStore } from "@/store/characterStore";
+import type { CharacterForm } from "@/store/characterStore";
 import Input from "@/components/common/Input";
 import CustomSelect from "./CustomSelect";
 import { customizeTranslations } from "./translations";
 
-const categoryList = [
+type Category = {
+  label: string;
+  type: "select" | "input";
+  options?: string[];
+};
+
+const categoryList: Category[] = [
   {
     label: "머리",
     type: "select",
@@ -57,6 +65,73 @@ const categoryList = [
   },
 ];
 
+// 각 카테고리 행을 별도 컴포넌트로 분리하여 리렌더 최소화
+const CategoryRow = React.memo(function CategoryRow({
+  cat,
+  language,
+}: {
+  cat: Category;
+  language: "en" | "ko" | "jp";
+}) {
+  // 해당 라벨의 값만 구독하여 불필요한 전체 리렌더 방지
+  const value = useCharacterStore(
+    (s) => s.form[cat.label as keyof CharacterForm] as string
+  );
+  const updateField = useCharacterStore((s) => s.updateField);
+
+  const onChange = useCallback(
+    (v: string) => updateField(cat.label as keyof CharacterForm, v),
+    [updateField, cat.label]
+  );
+
+  const translatedLabel = useMemo(
+    () =>
+      customizeTranslations.categories[
+        cat.label as keyof typeof customizeTranslations.categories
+      ]?.[language] || cat.label,
+    [language, cat.label]
+  );
+
+  const translatedOptions = useMemo(() => {
+    if (cat.type !== "select") return [] as { value: string; label: string }[];
+    return (
+      cat.options?.map((option: string) => ({
+        value: option,
+        label:
+          customizeTranslations.options[
+            option as keyof typeof customizeTranslations.options
+          ]?.[language] || option,
+      })) || []
+    );
+  }, [cat.type, cat.options, language]);
+
+  const placeholder = useMemo(
+    () =>
+      customizeTranslations.placeholder[
+        cat.label as keyof typeof customizeTranslations.placeholder
+      ]?.[language],
+    [language, cat.label]
+  );
+
+  return (
+    <div className="flex items-center gap-3 mb-1">
+      <span className="w-20 text-gray-1 text-base font-semibold text-right mr-2">
+        {translatedLabel}
+      </span>
+      {cat.type === "select" ? (
+        <CustomSelect
+          value={value}
+          onChange={onChange}
+          options={translatedOptions}
+          selectText={customizeTranslations.ui.select[language]}
+        />
+      ) : (
+        <Input value={value} onChange={onChange} placeholder={placeholder} />
+      )}
+    </div>
+  );
+});
+
 export default function CustomizePanel({
   onClose,
   onSave,
@@ -67,11 +142,11 @@ export default function CustomizePanel({
   onReset: () => void;
 }) {
   const { language } = useLanguage();
-  const { form, updateField } = useCharacterStore();
-
-  const handleChange = (key: keyof typeof form, value: string) => {
-    updateField(key, value);
-  };
+  // 미리보기 이미지가 사용하는 필드만 개별 구독하여 리렌더 최소화
+  const head = useCharacterStore((s) => s.form["머리"]);
+  const body = useCharacterStore((s) => s.form["몸통"]);
+  const legs = useCharacterStore((s) => s.form["다리"]);
+  const shoes = useCharacterStore((s) => s.form["신발"]);
 
   return (
     <div className="relative z-10 w-[1000px] max-w-full rounded-xl border border-blue-3 shadow-2xl mx-auto flex flex-col bg-gradient-blue-custom">
@@ -112,9 +187,9 @@ export default function CustomizePanel({
             />
 
             {/* 머리 파츠 */}
-            {form.머리 && form.머리 !== "기본" && (
+            {head && head !== "기본" && (
               <Image
-                src={`/img/parts/head/${form.머리}.png`}
+                src={`/img/parts/head/${head}.png`}
                 alt="머리 파츠"
                 width={220}
                 height={220}
@@ -127,9 +202,9 @@ export default function CustomizePanel({
             )}
 
             {/* 몸통 파츠 */}
-            {form.몸통 && form.몸통 !== "기본" && (
+            {body && body !== "기본" && (
               <Image
-                src={`/img/parts/body/${form.몸통}.png`}
+                src={`/img/parts/body/${body}.png`}
                 alt="몸통 파츠"
                 width={220}
                 height={220}
@@ -141,9 +216,9 @@ export default function CustomizePanel({
             )}
 
             {/* 다리 파츠 */}
-            {form.다리 && form.다리 !== "기본" && (
+            {legs && legs !== "기본" && (
               <Image
-                src={`/img/parts/legs/${form.다리}.png`}
+                src={`/img/parts/legs/${legs}.png`}
                 alt="다리 파츠"
                 width={220}
                 height={220}
@@ -155,9 +230,9 @@ export default function CustomizePanel({
             )}
 
             {/* 신발 파츠 */}
-            {form.신발 && form.신발 !== "기본" && (
+            {shoes && shoes !== "기본" && (
               <Image
-                src={`/img/parts/shoes/${form.신발}.png`}
+                src={`/img/parts/shoes/${shoes}.png`}
                 alt="신발 파츠"
                 width={220}
                 height={220}
@@ -173,43 +248,7 @@ export default function CustomizePanel({
         {/* 오른쪽: 카테고리/입력 */}
         <div className="flex-1 flex flex-col justify-center gap-3 px-8 py-6">
           {categoryList.map((cat) => (
-            <div key={cat.label} className="flex items-center gap-3 mb-1">
-              <span className="w-20 text-gray-1 text-base font-semibold text-right mr-2">
-                {customizeTranslations.categories[
-                  cat.label as keyof typeof customizeTranslations.categories
-                ]?.[language] || cat.label}
-              </span>
-              {cat.type === "select" ? (
-                <CustomSelect
-                  value={form[cat.label as keyof typeof form]}
-                  onChange={(v: string) =>
-                    handleChange(cat.label as keyof typeof form, v)
-                  }
-                  options={
-                    cat.options?.map((option: string) => ({
-                      value: option,
-                      label:
-                        customizeTranslations.options[
-                          option as keyof typeof customizeTranslations.options
-                        ]?.[language] || option,
-                    })) || []
-                  }
-                  selectText={customizeTranslations.ui.select[language]}
-                />
-              ) : (
-                <Input
-                  value={form[cat.label as keyof typeof form]}
-                  onChange={(v: string) =>
-                    handleChange(cat.label as keyof typeof form, v)
-                  }
-                  placeholder={
-                    customizeTranslations.placeholder[
-                      cat.label as keyof typeof customizeTranslations.placeholder
-                    ]?.[language]
-                  }
-                />
-              )}
-            </div>
+            <CategoryRow key={cat.label} cat={cat} language={language} />
           ))}
         </div>
       </div>
