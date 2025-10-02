@@ -12,6 +12,9 @@ import { customizeTranslations } from "./translations";
 type Category = {
   label: string;
   type: "select" | "input";
+  inputType?: "text" | "number";
+  min?: number;
+  max?: number;
   options?: string[];
 };
 
@@ -36,11 +39,41 @@ const categoryList: Category[] = [
     type: "select",
     options: ["기본", "신발1", "신발2", "신발3", "신발4"],
   },
-  { label: "체력", type: "input" },
-  { label: "마력", type: "input" },
-  { label: "무게", type: "input" },
-  { label: "키", type: "input" },
-  { label: "IQ", type: "input" },
+  {
+    label: "체력",
+    type: "input",
+    inputType: "number",
+    min: 1,
+    max: 100,
+  },
+  {
+    label: "마력",
+    type: "input",
+    inputType: "number",
+    min: 1,
+    max: 100,
+  },
+  {
+    label: "무게",
+    type: "input",
+    inputType: "number",
+    min: 1,
+    max: 999,
+  },
+  {
+    label: "키",
+    type: "input",
+    inputType: "number",
+    min: 1,
+    max: 300,
+  },
+  {
+    label: "IQ",
+    type: "input",
+    inputType: "number",
+    min: 1,
+    max: 300,
+  },
   {
     label: "MBTI",
     type: "select",
@@ -126,7 +159,14 @@ const CategoryRow = React.memo(function CategoryRow({
           selectText={customizeTranslations.ui.select[language]}
         />
       ) : (
-        <Input value={value} onChange={onChange} placeholder={placeholder} />
+        <Input
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          type={cat.inputType || "text"}
+          min={cat.min}
+          max={cat.max}
+        />
       )}
     </div>
   );

@@ -9,11 +9,9 @@ import { useLanguage } from "@/contexts/LanguageContext";
 export default function Settings() {
   const [loading, setLoading] = useState(true);
   const { language, setLanguage } = useLanguage();
-  const [color, setColor] = useState("sky");
 
   // 임시 상태
   const [tempLanguage, setTempLanguage] = useState(language); // language의 기본값은 "en"
-  const [tempColor, setTempColor] = useState(color); // color의 기본값은 "sky"
 
   const router = useRouter();
 
@@ -44,7 +42,6 @@ export default function Settings() {
   // 저장
   const handleSave = () => {
     setLanguage(tempLanguage);
-    setColor(tempColor);
     alert(TEXT.saved[tempLanguage]);
   };
 
@@ -52,7 +49,6 @@ export default function Settings() {
   const handleReset = () => {
     if (window.confirm(TEXT.resetConfirm[tempLanguage])) {
       setTempLanguage("en"); // 언어 초기화
-      setTempColor("sky"); // 색상 초기화
     }
   };
 
@@ -78,8 +74,6 @@ export default function Settings() {
       <OptionPanel
         language={tempLanguage}
         setLanguage={setTempLanguage}
-        color={tempColor}
-        setColor={setTempColor}
         onSave={handleSave}
         onReset={handleReset}
         onClose={handleClose}
