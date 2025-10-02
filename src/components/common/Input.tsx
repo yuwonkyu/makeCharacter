@@ -7,6 +7,7 @@ type InputProps = {
   type?: "text" | "number";
   min?: number;
   max?: number;
+  decimalPlaces?: number; // 소수점 자릿수 제한 (0이면 정수만)
 };
 
 const Input: React.FC<InputProps> = ({
@@ -16,19 +17,31 @@ const Input: React.FC<InputProps> = ({
   type = "text",
   min,
   max,
+  decimalPlaces,
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = e.target.value;
 
     // 숫자 타입일 때 숫자만 허용
     if (type === "number") {
-      // 숫자와 소수점만 허용 (정수 및 소수)
-      newValue = newValue.replace(/[^0-9.]/g, "");
+      // 소수점 자릿수가 0이면 정수만 허용
+      if (decimalPlaces === 0) {
+        newValue = newValue.replace(/[^0-9]/g, "");
+      } else {
+        // 숫자와 소수점만 허용
+        newValue = newValue.replace(/[^0-9.]/g, "");
 
-      // 소수점이 여러 개인 경우 첫 번째만 유지
-      const parts = newValue.split(".");
-      if (parts.length > 2) {
-        newValue = parts[0] + "." + parts.slice(1).join("");
+        // 소수점이 여러 개인 경우 첫 번째만 유지
+        const parts = newValue.split(".");
+        if (parts.length > 2) {
+          newValue = parts[0] + "." + parts.slice(1).join("");
+        }
+
+        // 소수점 자릿수 제한
+        if (decimalPlaces !== undefined && parts.length === 2) {
+          const decimalPart = parts[1].slice(0, decimalPlaces);
+          newValue = parts[0] + "." + decimalPart;
+        }
       }
 
       // min/max 범위 체크

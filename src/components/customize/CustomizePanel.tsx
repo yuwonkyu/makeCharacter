@@ -15,6 +15,7 @@ type Category = {
   inputType?: "text" | "number";
   min?: number;
   max?: number;
+  decimalPlaces?: number; // 소수점 자릿수 제한
   options?: string[];
 };
 
@@ -45,6 +46,7 @@ const categoryList: Category[] = [
     inputType: "number",
     min: 1,
     max: 100,
+    decimalPlaces: 0, // 정수만
   },
   {
     label: "마력",
@@ -52,6 +54,7 @@ const categoryList: Category[] = [
     inputType: "number",
     min: 1,
     max: 100,
+    decimalPlaces: 0, // 정수만
   },
   {
     label: "무게",
@@ -59,6 +62,7 @@ const categoryList: Category[] = [
     inputType: "number",
     min: 1,
     max: 999,
+    decimalPlaces: 2, // 소수점 2자리까지
   },
   {
     label: "키",
@@ -66,6 +70,7 @@ const categoryList: Category[] = [
     inputType: "number",
     min: 1,
     max: 300,
+    decimalPlaces: 2, // 소수점 2자리까지
   },
   {
     label: "IQ",
@@ -73,6 +78,7 @@ const categoryList: Category[] = [
     inputType: "number",
     min: 1,
     max: 300,
+    decimalPlaces: 2, // 소수점 2자리까지
   },
   {
     label: "MBTI",
@@ -166,6 +172,7 @@ const CategoryRow = React.memo(function CategoryRow({
           type={cat.inputType || "text"}
           min={cat.min}
           max={cat.max}
+          decimalPlaces={cat.decimalPlaces}
         />
       )}
     </div>
