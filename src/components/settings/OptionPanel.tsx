@@ -13,11 +13,6 @@ const TEXT = {
     ko: "언어",
     jp: "言語",
   },
-  color: {
-    en: "Color",
-    ko: "색상",
-    jp: "色",
-  },
   save: {
     en: "Save",
     ko: "저장",
@@ -36,17 +31,9 @@ const LANGUAGES = [
   { label: "日本語", value: "jp" },
 ];
 
-const COLORS = [
-  { label: "Sky Blue", value: "sky" },
-  { label: "Gray", value: "gray" },
-  { label: "Black & White", value: "bw" },
-];
-
 export default function OptionPanel({
   language,
   setLanguage,
-  color,
-  setColor,
   onSave,
   onReset,
   onClose,
@@ -77,67 +64,36 @@ export default function OptionPanel({
       </div>
       {/* 내용 */}
       <div className="px-2 py-8 rounded-[4px] border-[2px] border-blue-3 bg-white">
-        <div className="grid grid-cols-2 divide-x-2 divide-gray-4">
-          {/* 왼쪽(라벨) */}
-          <div className="flex flex-col space-y-10 text-center">
-            <span className="text-xl font-bold text-gray-2 border-b border-dashed border-gray-4 w-full pb-6 mb-6">
-              {TEXT.language[language]}
-            </span>
-            <span className="text-xl font-bold text-gray-2 w-full">
-              {TEXT.color[language]}
-            </span>
-          </div>
-          {/* 오른쪽(드롭다운) */}
-          <div className="flex flex-col space-y-10 text-center px-5">
-            <div className="w-full border-b border-dashed border-gray-4 pb-6 mb-6">
-              <div className="relative">
-                <select
-                  className="
-                  w-full py-1 rounded-[2px] border-blue-3 bg-blue-6 
-                  font-medium text-center text-gray-3 
-                  focus:outline-none cursor-pointer appearance-none inset-dropdown"
-                  value={language}
-                  onChange={(e) => setLanguage(e.target.value as Language)}
-                >
-                  {LANGUAGES.map((l) => (
-                    <option key={l.value} value={l.value}>
-                      {l.label}
-                    </option>
-                  ))}
-                </select>
-                <Image
-                  src="/icon/dropdown.svg"
-                  alt="드롭다운"
-                  width={20}
-                  height={20}
-                  className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 size-5"
-                />
-              </div>
+        <div className="flex flex-col items-center space-y-6">
+          {/* 언어 설정 */}
+          <div className="w-full max-w-[200px]">
+            <div className="text-center mb-4">
+              <span className="text-xl font-bold text-gray-2 border-b border-dashed border-gray-4 pb-2">
+                {TEXT.language[language]}
+              </span>
             </div>
-            <div className="w-full">
-              <div className="relative">
-                <select
-                  className="
-                  w-full py-1 rounded-[2px] border-blue-3 bg-blue-6 
-                  font-medium text-center text-gray-3 
-                  focus:outline-none cursor-pointer appearance-none inset-dropdown"
-                  value={color}
-                  onChange={(e) => setColor(e.target.value)}
-                >
-                  {COLORS.map((c) => (
-                    <option key={c.value} value={c.value}>
-                      {c.label}
-                    </option>
-                  ))}
-                </select>
-                <Image
-                  src="/icon/dropdown.svg"
-                  alt="드롭다운"
-                  width={20}
-                  height={20}
-                  className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 size-5"
-                />
-              </div>
+            <div className="relative">
+              <select
+                className="
+                w-full py-1 rounded-[2px] border-blue-3 bg-blue-6 
+                font-medium text-center text-gray-3 
+                focus:outline-none cursor-pointer appearance-none inset-dropdown"
+                value={language}
+                onChange={(e) => setLanguage(e.target.value as Language)}
+              >
+                {LANGUAGES.map((l) => (
+                  <option key={l.value} value={l.value}>
+                    {l.label}
+                  </option>
+                ))}
+              </select>
+              <Image
+                src="/icon/dropdown.svg"
+                alt="드롭다운"
+                width={20}
+                height={20}
+                className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 size-5"
+              />
             </div>
           </div>
         </div>
