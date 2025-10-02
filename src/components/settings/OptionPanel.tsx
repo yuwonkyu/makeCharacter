@@ -64,14 +64,15 @@ export default function OptionPanel({
       </div>
       {/* 내용 */}
       <div className="px-2 py-8 rounded-[4px] border-[2px] border-blue-3 bg-white">
-        <div className="flex flex-col items-center space-y-6">
-          {/* 언어 설정 */}
-          <div className="w-full max-w-[200px]">
-            <div className="text-center mb-4">
-              <span className="text-xl font-bold text-gray-2 border-b border-dashed border-gray-4 pb-2">
-                {TEXT.language[language]}
-              </span>
-            </div>
+        <div className="flex items-center justify-between px-4">
+          {/* 왼쪽: 언어 라벨 */}
+          <div className="flex-shrink-0">
+            <span className="text-xl font-bold text-gray-2">
+              {TEXT.language[language]}
+            </span>
+          </div>
+          {/* 오른쪽: 드롭다운 */}
+          <div className="w-[150px]">
             <div className="relative">
               <select
                 className="
