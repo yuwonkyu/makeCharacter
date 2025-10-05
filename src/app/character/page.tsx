@@ -7,11 +7,12 @@ import { useCharacterStore } from "@/store/characterStore";
 import { useEffect, useState } from "react";
 import BlueSpinner from "@/components/lodding/BlueSpinner";
 import { useLanguage } from "@/contexts/LanguageContext";
+import CharacterRenderer from "@/components/character/CharacterRenderer";
 
 const CharacterPage = () => {
   const router = useRouter();
   const { pos, GRID_WIDTH, GRID_HEIGHT, setPos, canMove } = useAvatarMove();
-  const { form } = useCharacterStore();
+  const { form, loadFromStorage } = useCharacterStore();
   const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(true);
   const { language } = useLanguage();
@@ -37,10 +38,13 @@ const CharacterPage = () => {
   }, []);
 
   useEffect(() => {
+    // 저장된 캐릭터 데이터 불러오기
+    loadFromStorage();
+
     // 예시: 1초 후 로딩 해제 (실제 fetch 등과 연동 가능)
     const timer = setTimeout(() => setLoading(false), 300);
     return () => clearTimeout(timer);
-  }, []);
+  }, [loadFromStorage]);
 
   // 이동 함수
   const move = (dx: number, dy: number) => {
@@ -186,13 +190,10 @@ const CharacterPage = () => {
               transition: "left 0.1s, top 0.1s, width 0.2s, height 0.2s",
             }}
           >
-            <Image
-              src="/img/npc1.png"
-              alt="아바타"
+            <CharacterRenderer
               width={avatarSize}
               height={avatarSize}
               className="object-contain drop-shadow-lg w-16 h-16 md:w-24 md:h-24 lg:w-28 lg:h-28"
-              draggable={false}
               priority
             />
           </div>

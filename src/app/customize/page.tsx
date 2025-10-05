@@ -19,7 +19,7 @@ const CustomizePanel = dynamic(
 export default function CustomizePage() {
   const { language } = useLanguage();
   const [loading, setLoading] = useState(true);
-  const { resetForm } = useCharacterStore();
+  const { resetForm, saveToStorage, loadFromStorage } = useCharacterStore();
   const router = useRouter();
 
   // Memoized TEXT object to prevent recreation on every render
@@ -45,8 +45,15 @@ export default function CustomizePage() {
   );
 
   const handleSave = useCallback(() => {
-    alert(TEXT.saved[language]);
-  }, [TEXT.saved, language]);
+    try {
+      // 스토어의 saveToStorage 메서드 사용
+      saveToStorage();
+      alert(TEXT.saved[language]);
+    } catch (error) {
+      console.error("Failed to save character data:", error);
+      alert("저장에 실패했습니다.");
+    }
+  }, [TEXT.saved, language, saveToStorage]);
 
   const handleReset = useCallback(() => {
     if (window.confirm(TEXT.confirmReset[language])) {
@@ -59,9 +66,12 @@ export default function CustomizePage() {
   }, [router]);
 
   useEffect(() => {
+    // 저장된 캐릭터 데이터 불러오기
+    loadFromStorage();
+
     const timer = setTimeout(() => setLoading(false), 300);
     return () => clearTimeout(timer);
-  }, []);
+  }, [loadFromStorage]);
 
   if (loading) {
     return (
