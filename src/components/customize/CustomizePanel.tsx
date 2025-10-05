@@ -1,13 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCharacterStore } from "@/store/characterStore";
 import type { CharacterForm } from "@/store/characterStore";
 import Input from "@/components/common/Input";
 import CustomSelect from "./CustomSelect";
 import { customizeTranslations } from "./translations";
+import {
+  getAllPartOptions,
+  getDefaultPartOptions,
+  type PartCategory,
+  type PartItem,
+} from "@/utils/partUtils";
 
 type Category = {
   label: string;
@@ -17,28 +23,77 @@ type Category = {
   max?: number;
   decimalPlaces?: number; // 소수점 자릿수 제한
   options?: string[];
+  partCategory?: PartCategory; // 파츠 카테고리 추가
 };
 
-const categoryList: Category[] = [
+// 파츠 옵션을 관리하는 커스텀 훅
+function usePartOptions() {
+  const [partOptions, setPartOptions] = useState<
+    Record<PartCategory, PartItem[]>
+  >({
+    head: getDefaultPartOptions("head"),
+    body: getDefaultPartOptions("body"),
+    legs: getDefaultPartOptions("legs"),
+    shoes: getDefaultPartOptions("shoes"),
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadPartOptions = async () => {
+      try {
+        const options = await getAllPartOptions();
+        if (isMounted) {
+          setPartOptions(options);
+        }
+      } catch (error) {
+        console.error("Failed to load part options:", error);
+        // 폴백 옵션은 이미 state에 설정되어 있음
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadPartOptions();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  return { partOptions, loading };
+}
+
+// 카테고리 목록 (파츠 카테고리는 동적으로 로드됨)
+const createCategoryList = (
+  partOptions: Record<PartCategory, PartItem[]>
+): Category[] => [
   {
     label: "머리",
     type: "select",
-    options: ["기본", "머리1", "머리2", "머리3", "머리4"],
+    partCategory: "head",
+    options: partOptions.head.map((option) => option.label),
   },
   {
     label: "몸통",
     type: "select",
-    options: ["기본", "상의1", "상의2", "상의3", "상의4"],
+    partCategory: "body",
+    options: partOptions.body.map((option) => option.label),
   },
   {
     label: "다리",
     type: "select",
-    options: ["기본", "하의1", "하의2", "하의3", "하의4"],
+    partCategory: "legs",
+    options: partOptions.legs.map((option) => option.label),
   },
   {
     label: "신발",
     type: "select",
-    options: ["기본", "신발1", "신발2", "신발3", "신발4"],
+    partCategory: "shoes",
+    options: partOptions.shoes.map((option) => option.label),
   },
   {
     label: "체력",
@@ -108,9 +163,11 @@ const categoryList: Category[] = [
 const CategoryRow = React.memo(function CategoryRow({
   cat,
   language,
+  partOptions,
 }: {
   cat: Category;
   language: "en" | "ko" | "jp";
+  partOptions: Record<PartCategory, PartItem[]>;
 }) {
   // 해당 라벨의 값만 구독하여 불필요한 전체 리렌더 방지
   const value = useCharacterStore(
@@ -132,7 +189,23 @@ const CategoryRow = React.memo(function CategoryRow({
   );
 
   const translatedOptions = useMemo(() => {
-    if (cat.type !== "select") return [] as { value: string; label: string }[];
+    if (cat.type !== "select")
+      return [] as { value: string; label: string; imagePath?: string }[];
+
+    // 파츠 카테고리인 경우 이미지 경로도 포함하여 옵션 생성
+    if (cat.partCategory) {
+      const categoryPartOptions = partOptions[cat.partCategory] || [];
+      return categoryPartOptions.map((partOption) => ({
+        value: partOption.value,
+        label:
+          customizeTranslations.options[
+            partOption.label as keyof typeof customizeTranslations.options
+          ]?.[language] || partOption.label,
+        imagePath: partOption.imagePath,
+      }));
+    }
+
+    // 일반 카테고리인 경우 기존 방식 유지
     return (
       cat.options?.map((option: string) => ({
         value: option,
@@ -142,7 +215,7 @@ const CategoryRow = React.memo(function CategoryRow({
           ]?.[language] || option,
       })) || []
     );
-  }, [cat.type, cat.options, language]);
+  }, [cat.type, cat.options, cat.partCategory, language, partOptions]);
 
   const placeholder = useMemo(
     () =>
@@ -163,6 +236,7 @@ const CategoryRow = React.memo(function CategoryRow({
           onChange={onChange}
           options={translatedOptions}
           selectText={customizeTranslations.ui.select[language]}
+          showImages={!!cat.partCategory} // 파츠 카테고리인 경우에만 이미지 표시
         />
       ) : (
         <Input
@@ -189,11 +263,31 @@ export default function CustomizePanel({
   onReset: () => void;
 }) {
   const { language } = useLanguage();
+  const { partOptions } = usePartOptions();
+
   // 미리보기 이미지가 사용하는 필드만 개별 구독하여 리렌더 최소화
   const head = useCharacterStore((s) => s.form["머리"]);
   const body = useCharacterStore((s) => s.form["몸통"]);
   const legs = useCharacterStore((s) => s.form["다리"]);
   const shoes = useCharacterStore((s) => s.form["신발"]);
+
+  // 카테고리 목록을 partOptions 기반으로 생성
+  const categoryList = useMemo(
+    () => createCategoryList(partOptions),
+    [partOptions]
+  );
+
+  // 파츠 라벨을 실제 파일 경로로 변환하는 함수
+  const getPartImagePath = useCallback(
+    (category: PartCategory, label: string): string => {
+      const options = partOptions[category] || [];
+      const option = options.find(
+        (opt) => opt.label === label || opt.value === label
+      );
+      return option?.imagePath || `/img/parts/${category}/${label}.png`;
+    },
+    [partOptions]
+  );
 
   return (
     <div className="relative z-10 w-[1000px] max-w-full rounded-xl border border-blue-3 shadow-2xl mx-auto flex flex-col bg-gradient-blue-custom">
@@ -236,7 +330,7 @@ export default function CustomizePanel({
             {/* 머리 파츠 */}
             {head && head !== "기본" && (
               <Image
-                src={`/img/parts/head/${head}.png`}
+                src={getPartImagePath("head", head)}
                 alt="머리 파츠"
                 width={220}
                 height={220}
@@ -251,7 +345,7 @@ export default function CustomizePanel({
             {/* 몸통 파츠 */}
             {body && body !== "기본" && (
               <Image
-                src={`/img/parts/body/${body}.png`}
+                src={getPartImagePath("body", body)}
                 alt="몸통 파츠"
                 width={220}
                 height={220}
@@ -265,7 +359,7 @@ export default function CustomizePanel({
             {/* 다리 파츠 */}
             {legs && legs !== "기본" && (
               <Image
-                src={`/img/parts/legs/${legs}.png`}
+                src={getPartImagePath("legs", legs)}
                 alt="다리 파츠"
                 width={220}
                 height={220}
@@ -279,7 +373,7 @@ export default function CustomizePanel({
             {/* 신발 파츠 */}
             {shoes && shoes !== "기본" && (
               <Image
-                src={`/img/parts/shoes/${shoes}.png`}
+                src={getPartImagePath("shoes", shoes)}
                 alt="신발 파츠"
                 width={220}
                 height={220}
@@ -295,7 +389,12 @@ export default function CustomizePanel({
         {/* 오른쪽: 카테고리/입력 */}
         <div className="flex-1 flex flex-col justify-center gap-3 px-8 py-6">
           {categoryList.map((cat) => (
-            <CategoryRow key={cat.label} cat={cat} language={language} />
+            <CategoryRow
+              key={cat.label}
+              cat={cat}
+              language={language}
+              partOptions={partOptions}
+            />
           ))}
         </div>
       </div>

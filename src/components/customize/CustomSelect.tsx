@@ -4,6 +4,7 @@ import React from "react";
 interface Option {
   value: string;
   label: string;
+  imagePath?: string; // 이미지 경로 추가
 }
 
 interface CustomSelectProps {
@@ -11,6 +12,7 @@ interface CustomSelectProps {
   onChange: (v: string) => void;
   options: string[] | Option[];
   selectText?: string;
+  showImages?: boolean; // 이미지 표시 여부
 }
 
 const CustomSelect = React.memo(function CustomSelect({
@@ -18,9 +20,12 @@ const CustomSelect = React.memo(function CustomSelect({
   onChange,
   options,
   selectText,
+  showImages = false,
 }: CustomSelectProps) {
   // options가 string[] 인지 Option[] 인지 확인
   const isStringArray = options.length > 0 && typeof options[0] === "string";
+  const hasImages = showImages && !isStringArray && 
+    (options as Option[]).some(opt => opt.imagePath);
 
   return (
     <div className="relative w-full">
@@ -44,6 +49,25 @@ const CustomSelect = React.memo(function CustomSelect({
               </option>
             ))}
       </select>
+      
+      {/* 선택된 아이템의 이미지 미리보기 (파츠 옵션인 경우에만) */}
+      {hasImages && value && (
+        <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+          {(() => {
+            const selectedOption = (options as Option[]).find(opt => opt.value === value);
+            return selectedOption?.imagePath ? (
+              <Image 
+                src={selectedOption.imagePath} 
+                alt={selectedOption.label}
+                width={20} 
+                height={20}
+                className="rounded-sm object-cover"
+              />
+            ) : null;
+          })()}
+        </div>
+      )}
+      
       <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 flex items-center">
         <Image src="/icon/dropdown.svg" alt="드롭다운" width={20} height={18} />
       </span>
