@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useCallback, useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useCharacterStore } from "@/store/characterStore";
 import {
   getAllPartOptions,
@@ -69,39 +69,27 @@ const CharacterRenderer = React.memo(function CharacterRenderer({
   const { form } = useCharacterStore();
   const { partOptions } = usePartOptions();
 
-  // 파츠 라벨을 실제 파일 경로로 변환하는 함수
-  const getPartImagePath = useCallback(
-    (category: PartCategory, label: string): string => {
-      const options = partOptions[category] || [];
-      const option = options.find(
-        (opt) => opt.label === label || opt.value === label
-      );
-      return option?.imagePath || `/img/parts/${category}/${label}.png`;
-    },
-    [partOptions]
-  );
-
-  // 각 파츠의 이미지 경로를 메모화
+  // 각 파츠의 이미지 경로와 조정 정보를 메모화
   const partPaths = useMemo(
     () => ({
       head:
         form["머리"] && form["머리"] !== "기본"
-          ? getPartImagePath("head", form["머리"])
+          ? partOptions.head.find((opt) => opt.label === form["머리"])
           : null,
       body:
         form["몸통"] && form["몸통"] !== "기본"
-          ? getPartImagePath("body", form["몸통"])
+          ? partOptions.body.find((opt) => opt.label === form["몸통"])
           : null,
       legs:
         form["다리"] && form["다리"] !== "기본"
-          ? getPartImagePath("legs", form["다리"])
+          ? partOptions.legs.find((opt) => opt.label === form["다리"])
           : null,
       shoes:
         form["신발"] && form["신발"] !== "기본"
-          ? getPartImagePath("shoes", form["신발"])
+          ? partOptions.shoes.find((opt) => opt.label === form["신발"])
           : null,
     }),
-    [form, getPartImagePath]
+    [form, partOptions]
   );
 
   return (
@@ -121,11 +109,16 @@ const CharacterRenderer = React.memo(function CharacterRenderer({
       {/* 머리 파츠 */}
       {partPaths.head && (
         <Image
-          src={partPaths.head}
+          src={partPaths.head.imagePath}
           alt="머리 파츠"
           width={width}
           height={height}
-          className="absolute inset-0 object-contain"
+          className="absolute inset-0 object-contain z-10"
+          style={{
+            transform: `translate(${partPaths.head.offsetX || 0}px, ${
+              partPaths.head.offsetY || 0
+            }px) scale(${partPaths.head.scale || 1})`,
+          }}
           onError={(e) => {
             // 이미지 로드 실패 시 숨김
             e.currentTarget.style.display = "none";
@@ -136,11 +129,16 @@ const CharacterRenderer = React.memo(function CharacterRenderer({
       {/* 몸통 파츠 */}
       {partPaths.body && (
         <Image
-          src={partPaths.body}
+          src={partPaths.body.imagePath}
           alt="몸통 파츠"
           width={width}
           height={height}
           className="absolute inset-0 object-contain"
+          style={{
+            transform: `translate(${partPaths.body.offsetX || 0}px, ${
+              partPaths.body.offsetY || 0
+            }px) scale(${partPaths.body.scale || 1})`,
+          }}
           onError={(e) => {
             e.currentTarget.style.display = "none";
           }}
@@ -150,11 +148,16 @@ const CharacterRenderer = React.memo(function CharacterRenderer({
       {/* 다리 파츠 */}
       {partPaths.legs && (
         <Image
-          src={partPaths.legs}
+          src={partPaths.legs.imagePath}
           alt="다리 파츠"
           width={width}
           height={height}
           className="absolute inset-0 object-contain"
+          style={{
+            transform: `translate(${partPaths.legs.offsetX || 0}px, ${
+              partPaths.legs.offsetY || 0
+            }px) scale(${partPaths.legs.scale || 1})`,
+          }}
           onError={(e) => {
             e.currentTarget.style.display = "none";
           }}
@@ -164,11 +167,16 @@ const CharacterRenderer = React.memo(function CharacterRenderer({
       {/* 신발 파츠 */}
       {partPaths.shoes && (
         <Image
-          src={partPaths.shoes}
+          src={partPaths.shoes.imagePath}
           alt="신발 파츠"
           width={width}
           height={height}
           className="absolute inset-0 object-contain"
+          style={{
+            transform: `translate(${partPaths.shoes.offsetX || 0}px, ${
+              partPaths.shoes.offsetY || 0
+            }px) scale(${partPaths.shoes.scale || 1})`,
+          }}
           onError={(e) => {
             e.currentTarget.style.display = "none";
           }}

@@ -8,6 +8,7 @@ import type { CharacterForm } from "@/store/characterStore";
 import Input from "@/components/common/Input";
 import CustomSelect from "./CustomSelect";
 import { customizeTranslations } from "./translations";
+import CharacterRenderer from "@/components/character/CharacterRenderer";
 import {
   getAllPartOptions,
   getDefaultPartOptions,
@@ -265,27 +266,9 @@ export default function CustomizePanel({
   const { language } = useLanguage();
   const { partOptions } = usePartOptions();
 
-  // 미리보기 이미지가 사용하는 필드만 개별 구독하여 리렌더 최소화
-  const head = useCharacterStore((s) => s.form["머리"]);
-  const body = useCharacterStore((s) => s.form["몸통"]);
-  const legs = useCharacterStore((s) => s.form["다리"]);
-  const shoes = useCharacterStore((s) => s.form["신발"]);
-
   // 카테고리 목록을 partOptions 기반으로 생성
   const categoryList = useMemo(
     () => createCategoryList(partOptions),
-    [partOptions]
-  );
-
-  // 파츠 라벨을 실제 파일 경로로 변환하는 함수
-  const getPartImagePath = useCallback(
-    (category: PartCategory, label: string): string => {
-      const options = partOptions[category] || [];
-      const option = options.find(
-        (opt) => opt.label === label || opt.value === label
-      );
-      return option?.imagePath || `/img/parts/${category}/${label}.png`;
-    },
     [partOptions]
   );
 
@@ -318,71 +301,13 @@ export default function CustomizePanel({
         {/* 왼쪽: 캐릭터 미리보기 */}
         <div className="flex-1 flex items-center justify-center">
           <div className="relative size-[220px]">
-            {/* 베이스 캐릭터 */}
-            <Image
-              src="/img/base.png"
-              alt="베이스 캐릭터"
-              fill
-              className="absolute inset-0 object-contain"
+            <CharacterRenderer
+              width={220}
+              height={220}
+              className="w-full h-full"
               priority
+              showBase={true}
             />
-
-            {/* 머리 파츠 */}
-            {head && head !== "기본" && (
-              <Image
-                src={getPartImagePath("head", head)}
-                alt="머리 파츠"
-                width={220}
-                height={220}
-                className="absolute inset-0 object-contain"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 숨김
-                  e.currentTarget.style.display = "none";
-                }}
-              />
-            )}
-
-            {/* 몸통 파츠 */}
-            {body && body !== "기본" && (
-              <Image
-                src={getPartImagePath("body", body)}
-                alt="몸통 파츠"
-                width={220}
-                height={220}
-                className="absolute inset-0 object-contain"
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-              />
-            )}
-
-            {/* 다리 파츠 */}
-            {legs && legs !== "기본" && (
-              <Image
-                src={getPartImagePath("legs", legs)}
-                alt="다리 파츠"
-                width={220}
-                height={220}
-                className="absolute inset-0 object-contain"
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-              />
-            )}
-
-            {/* 신발 파츠 */}
-            {shoes && shoes !== "기본" && (
-              <Image
-                src={getPartImagePath("shoes", shoes)}
-                alt="신발 파츠"
-                width={220}
-                height={220}
-                className="absolute inset-0 object-contain"
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-              />
-            )}
           </div>
         </div>
 

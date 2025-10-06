@@ -8,6 +8,9 @@ export type PartItem = {
   value: string;
   label: string;
   imagePath: string;
+  offsetX?: number; // X축 오프셋 (픽셀)
+  offsetY?: number; // Y축 오프셋 (픽셀)
+  scale?: number; // 크기 조정 (1.0 = 기본 크기)
 };
 
 /**
@@ -34,6 +37,56 @@ const FALLBACK_PARTS_FILES: Record<PartCategory, string[]> = {
   legs: ["Bottom0.png"],
   shoes: ["Shoes0.png"],
 };
+
+/**
+ * 카테고리별 기본 위치 조정 정보
+ */
+const CATEGORY_BASE_ADJUSTMENTS: Record<
+  PartCategory,
+  { offsetX: number; offsetY: number; scale: number }
+> = {
+  head: { offsetX: 0, offsetY: -25, scale: 0.8 }, // 머리는 더 위쪽에 배치하고 크기 축소
+  body: { offsetX: 0, offsetY: -5, scale: 1.0 }, // 상체는 중앙에서 약간 위
+  legs: { offsetX: 0, offsetY: 15, scale: 1.0 }, // 다리는 아래쪽에 배치
+  shoes: { offsetX: 0, offsetY: 25, scale: 1.0 }, // 신발은 가장 아래쪽에 배치
+};
+
+/**
+ * 특정 파츠 파일에 대한 개별 조정 정보 (카테고리 기본값에 추가로 적용)
+ */
+const INDIVIDUAL_PART_ADJUSTMENTS: Record<
+  string,
+  { offsetX?: number; offsetY?: number; scale?: number }
+> = {
+  // 토마토 머리 - 카테고리 기본값에 추가로 적용
+  "Head2.png": { offsetX: 0, offsetY: 5, scale: 1.0 },
+
+  // 다른 머리 파츠 예시
+  // "Head3.png": { offsetX: 2, offsetY: -3, scale: 0.95 },
+
+  // 상체 파츠 예시
+  // "body1.png": { offsetX: 0, offsetY: 2, scale: 1.05 },
+
+  // 다리 파츠 예시
+  // "Bottom1.png": { offsetX: 0, offsetY: -2, scale: 1.0 },
+
+  // 신발 파츠 예시
+  // "Shoes1.png": { offsetX: 0, offsetY: 3, scale: 1.1 },
+};
+
+/**
+ * 파츠 파일명과 카테고리에 따른 최종 조정 정보 계산
+ */
+function getPartAdjustment(fileName: string, category: PartCategory) {
+  const baseAdjustment = CATEGORY_BASE_ADJUSTMENTS[category];
+  const individualAdjustment = INDIVIDUAL_PART_ADJUSTMENTS[fileName] || {};
+
+  return {
+    offsetX: baseAdjustment.offsetX + (individualAdjustment.offsetX || 0),
+    offsetY: baseAdjustment.offsetY + (individualAdjustment.offsetY || 0),
+    scale: baseAdjustment.scale * (individualAdjustment.scale || 1),
+  };
+}
 
 /**
  * 동적으로 로드된 파츠 파일 목록을 캐시
@@ -129,11 +182,15 @@ export async function getPartOptions(
 ): Promise<PartItem[]> {
   const files = await fetchPartFiles(category);
 
-  return files.map((fileName: string) => ({
-    value: fileNameToLabel(fileName, category),
-    label: fileNameToLabel(fileName, category),
-    imagePath: `/img/parts/${category}/${fileName}`,
-  }));
+  return files.map((fileName: string) => {
+    const adjustment = getPartAdjustment(fileName, category);
+    return {
+      value: fileNameToLabel(fileName, category),
+      label: fileNameToLabel(fileName, category),
+      imagePath: `/img/parts/${category}/${fileName}`,
+      ...adjustment,
+    };
+  });
 }
 
 /**
@@ -152,11 +209,15 @@ export async function getAllPartOptions(): Promise<
 
   for (const category of categories) {
     const files = allFiles[category] || FALLBACK_PARTS_FILES[category];
-    result[category] = files.map((fileName: string) => ({
-      value: fileNameToLabel(fileName, category),
-      label: fileNameToLabel(fileName, category),
-      imagePath: `/img/parts/${category}/${fileName}`,
-    }));
+    result[category] = files.map((fileName: string) => {
+      const adjustment = getPartAdjustment(fileName, category);
+      return {
+        value: fileNameToLabel(fileName, category),
+        label: fileNameToLabel(fileName, category),
+        imagePath: `/img/parts/${category}/${fileName}`,
+        ...adjustment,
+      };
+    });
   }
 
   return result;
@@ -185,11 +246,15 @@ export async function getPartImagePath(
 export function getDefaultPartOptions(category: PartCategory): PartItem[] {
   const files = FALLBACK_PARTS_FILES[category] || [];
 
-  return files.map((fileName: string) => ({
-    value: fileNameToLabel(fileName, category),
-    label: fileNameToLabel(fileName, category),
-    imagePath: `/img/parts/${category}/${fileName}`,
-  }));
+  return files.map((fileName: string) => {
+    const adjustment = getPartAdjustment(fileName, category);
+    return {
+      value: fileNameToLabel(fileName, category),
+      label: fileNameToLabel(fileName, category),
+      imagePath: `/img/parts/${category}/${fileName}`,
+      ...adjustment,
+    };
+  });
 }
 
 /**
