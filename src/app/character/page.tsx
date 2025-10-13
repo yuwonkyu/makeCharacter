@@ -11,9 +11,8 @@ import CharacterRenderer from "@/components/character/CharacterRenderer";
 
 const CharacterPage = () => {
   const router = useRouter();
-  const { pos, GRID_WIDTH, GRID_HEIGHT, setPos, canMove } = useAvatarMove();
+  const { pos, GRID_WIDTH, GRID_HEIGHT } = useAvatarMove();
   const { form, loadFromStorage } = useCharacterStore();
-  const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(true);
   const { language } = useLanguage();
 
@@ -31,13 +30,6 @@ const CharacterPage = () => {
   };
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  useEffect(() => {
     // 저장된 캐릭터 데이터 불러오기
     loadFromStorage();
 
@@ -46,28 +38,11 @@ const CharacterPage = () => {
     return () => clearTimeout(timer);
   }, [loadFromStorage]);
 
-  // 이동 함수
-  const move = (dx: number, dy: number) => {
-    const x = pos.x + dx;
-    const y = pos.y + dy;
-    if (canMove(x, y)) setPos({ x, y });
-  };
-
-  // 아바타 크기: 모바일/태블릿/PC별로 다르게
-  const AVATAR_SIZE_MOBILE = 64;
-  const AVATAR_SIZE_PC = 112;
-
-  // 반응형 아바타 크기 계산 (Tailwind로도 처리, style로도 보정)
-  const getAvatarSize = () => {
-    if (typeof window !== "undefined") {
-      if (window.innerWidth >= 1024) return AVATAR_SIZE_PC; // lg
-      return AVATAR_SIZE_MOBILE;
-    }
-    return AVATAR_SIZE_MOBILE;
-  };
+  // 아바타 크기: PC 크기로 고정
+  const AVATAR_SIZE = 112;
 
   // 위치 계산 (비율 기반)
-  const avatarSize = getAvatarSize();
+  const avatarSize = AVATAR_SIZE;
   const left = `calc(${(pos.x / GRID_WIDTH) * 100}% - ${avatarSize / 2}px)`;
   const top = `calc(${(pos.y / GRID_HEIGHT) * 100}% - ${avatarSize}px)`;
 
@@ -187,51 +162,17 @@ const CharacterPage = () => {
               top,
               width: avatarSize,
               height: avatarSize,
-              transition: "left 0.1s, top 0.1s, width 0.2s, height 0.2s",
+              transition: "left 0.1s, top 0.1s",
             }}
           >
             <CharacterRenderer
               width={avatarSize}
               height={avatarSize}
-              className="object-contain drop-shadow-lg w-16 h-16 md:w-24 md:h-24 lg:w-28 lg:h-28"
+              className="object-contain drop-shadow-lg w-28 h-28"
               priority
             />
           </div>
         </div>
-        {/* 모바일에서만 표시되는 이동 버튼 */}
-        {isMobile && (
-          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-0.5 ">
-            {/* 위쪽 버튼 */}
-            <button
-              className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md opacity-85 bg-gradient-blue-custom"
-              onClick={() => move(0, -1)}
-            >
-              ↑
-            </button>
-            {/* 좌/우 버튼 */}
-            <div className="flex flex-row gap-14">
-              <button
-                className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md opacity-85 bg-gradient-blue-custom"
-                onClick={() => move(-1, 0)}
-              >
-                ←
-              </button>
-              <button
-                className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md opacity-85 bg-gradient-blue-custom"
-                onClick={() => move(1, 0)}
-              >
-                →
-              </button>
-            </div>
-            {/* 아래쪽 버튼 */}
-            <button
-              className="size-15 rounded-full text-white text-2xl flex items-center justify-center shadow-md opacity-85 bg-gradient-blue-custom"
-              onClick={() => move(0, 1)}
-            >
-              ↓
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
