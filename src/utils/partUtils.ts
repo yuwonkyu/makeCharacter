@@ -60,7 +60,7 @@ const INDIVIDUAL_PART_ADJUSTMENTS: Record<
 > = {
   // 토마토 머리 - 카테고리 기본값에 추가로 적용
   "Head1.png": { offsetX: 0, offsetY: -27, scale: 0.38 },
-  "Head2.png": { offsetX: 0, offsetY: 0, scale: 0.35 },
+  "Head2.png": { offsetX: 0, offsetY: -25.5, scale: 0.28 },
 
   // 다른 머리 파츠 예시
   // "Head3.png": { offsetX: 2, offsetY: -3, scale: 0.95 },

@@ -300,11 +300,11 @@ export default function CustomizePanel({
       <div className="flex flex-row w-full h-[480px] bg-white py-70">
         {/* 왼쪽: 캐릭터 미리보기 */}
         <div className="flex-1 flex items-center justify-center">
-          <div className="relative size-[220px]">
+          <div className="relative w-28 h-28">
             <CharacterRenderer
-              width={220}
-              height={220}
-              className="w-full h-full"
+              width={112}
+              height={112}
+              className="object-contain drop-shadow-lg w-28 h-28"
               priority
               showBase={true}
             />
