@@ -133,7 +133,7 @@ const CharacterRenderer = React.memo(function CharacterRenderer({
           alt="몸통 파츠"
           width={width}
           height={height}
-          className="absolute inset-0 object-contain"
+          className="absolute inset-0 object-contain z-9"
           style={{
             transform: `translate(${partPaths.body.offsetX || 0}px, ${
               partPaths.body.offsetY || 0
@@ -152,7 +152,7 @@ const CharacterRenderer = React.memo(function CharacterRenderer({
           alt="다리 파츠"
           width={width}
           height={height}
-          className="absolute inset-0 object-contain"
+          className="absolute inset-0 object-contain z-8"
           style={{
             transform: `translate(${partPaths.legs.offsetX || 0}px, ${
               partPaths.legs.offsetY || 0
@@ -171,7 +171,7 @@ const CharacterRenderer = React.memo(function CharacterRenderer({
           alt="신발 파츠"
           width={width}
           height={height}
-          className="absolute inset-0 object-contain"
+          className="absolute inset-0 object-contain z-7"
           style={{
             transform: `translate(${partPaths.shoes.offsetX || 0}px, ${
               partPaths.shoes.offsetY || 0

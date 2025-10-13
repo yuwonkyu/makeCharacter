@@ -45,10 +45,10 @@ const CATEGORY_BASE_ADJUSTMENTS: Record<
   PartCategory,
   { offsetX: number; offsetY: number; scale: number }
 > = {
-  head: { offsetX: 0, offsetY: -25, scale: 0.8 }, // 머리는 더 위쪽에 배치하고 크기 축소
-  body: { offsetX: 0, offsetY: -5, scale: 1.0 }, // 상체는 중앙에서 약간 위
-  legs: { offsetX: 0, offsetY: 15, scale: 1.0 }, // 다리는 아래쪽에 배치
-  shoes: { offsetX: 0, offsetY: 25, scale: 1.0 }, // 신발은 가장 아래쪽에 배치
+  head: { offsetX: 0, offsetY: 0, scale: 1 }, // 머리는 더 위쪽에 배치하고 크기 축소
+  body: { offsetX: 0, offsetY: 0, scale: 1 }, // 상체는 중앙에서 약간 위
+  legs: { offsetX: 0, offsetY: 0, scale: 1 }, // 다리는 아래쪽에 배치
+  shoes: { offsetX: 0, offsetY: 0, scale: 1 }, // 신발은 가장 아래쪽에 배치
 };
 
 /**
@@ -59,16 +59,17 @@ const INDIVIDUAL_PART_ADJUSTMENTS: Record<
   { offsetX?: number; offsetY?: number; scale?: number }
 > = {
   // 토마토 머리 - 카테고리 기본값에 추가로 적용
-  "Head2.png": { offsetX: 0, offsetY: 5, scale: 1.0 },
+  "Head1.png": { offsetX: 0, offsetY: -27, scale: 0.38 },
+  "Head2.png": { offsetX: 0, offsetY: 0, scale: 0.35 },
 
   // 다른 머리 파츠 예시
   // "Head3.png": { offsetX: 2, offsetY: -3, scale: 0.95 },
 
   // 상체 파츠 예시
-  // "body1.png": { offsetX: 0, offsetY: 2, scale: 1.05 },
+  "body1.png": { offsetX: 0, offsetY: 0, scale: 0.3 },
 
   // 다리 파츠 예시
-  // "Bottom1.png": { offsetX: 0, offsetY: -2, scale: 1.0 },
+  "Bottom1.png": { offsetX: 0, offsetY: 46, scale: 0.37 },
 
   // 신발 파츠 예시
   // "Shoes1.png": { offsetX: 0, offsetY: 3, scale: 1.1 },
