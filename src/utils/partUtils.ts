@@ -63,13 +63,13 @@ const INDIVIDUAL_PART_ADJUSTMENTS: Record<
   "Head2.png": { offsetX: 0, offsetY: -25.5, scale: 0.28 },
 
   // 상체 파츠 예시
-  "body1.png": { offsetX: 0, offsetY: 0, scale: 0.3 },
+  "body1.png": { offsetX: -2, offsetY: 5, scale: 0.33 },
 
   // 다리 파츠 예시
-  "Bottom1.png": { offsetX: 0, offsetY: 46, scale: 0.37 },
+  "Bottom1.png": { offsetX: 0, offsetY: 46, scale: 0.35 },
 
   // 신발 파츠 예시
-  // "Shoes1.png": { offsetX: 0, offsetY: 3, scale: 1.1 },
+  "Shoes1.png": { offsetX: 0, offsetY: 86, scale: 0.35 },
 };
 
 /**
