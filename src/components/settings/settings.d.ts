@@ -1,9 +1,11 @@
-export type Language = "en" | "ko" | "jp";
+import type { Language } from "@/types/common";
 
-export type OptionPanelProps = {
+export type { Language };
+
+export interface OptionPanelProps {
   language: Language;
   setLanguage: (lang: Language) => void;
   onSave?: () => void;
   onReset?: () => void;
   onClose?: () => void;
-};
+}

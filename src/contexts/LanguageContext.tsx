@@ -1,8 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
-
-type Language = "en" | "ko" | "jp";
+import type { Language } from "@/types/common";
 type LanguageContextType = {
   language: Language;
   setLanguage: (lang: Language) => void;
